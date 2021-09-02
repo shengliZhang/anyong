@@ -1,0 +1,54 @@
+.containers {
+  padding-top: 36px;
+}
+
+.top {
+  width: 1088px;
+  height: 176px;
+  background-color: rgba(185, 195, 217, 0.04);
+  border: solid 2px rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  padding: 49px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 100px;
+  & > div {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding-left: 80px;
+    & > div {
+      color: #b8bec7;
+      font-size: 36px;
+      margin-right: 36px;
+      display: flex;
+      align-items: center;
+      i {
+        background-repeat: no-repeat;
+        background-size: 100%;
+        margin-right: 20px;
+      }
+    }
+    & > span {
+      font-size: 56px;
+      color: #ffffff;
+    }
+  }
+  .left {
+    border-right: 1px solid rgba(185, 195, 217, 0.62);
+    i {
+      width: 21px;
+      height: 40px;
+      background-image: url('../../assets/temp.svg');
+    }
+  }
+  .right {
+    i {
+      width: 28px;
+      height: 34px;
+      background-image: url('../../assets/hemidte.svg');
+    }
+  }
+}

@@ -1,0 +1,36 @@
+.container {
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .left {
+      font-size: 32px;
+      color: #5dcbf1;
+      line-height: 48px;
+    }
+    .right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      & > div {
+        display: flex;
+        align-items: center;
+        margin-left: 40px;
+        i {
+          width: 14px;
+          height: 14px;
+          border: 3px solid #404c69;
+          border-radius: 50%;
+          box-sizing: content-box;
+          margin-right: 10px;
+        }
+        span {
+          font-size: 28px;
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}

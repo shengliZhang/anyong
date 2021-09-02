@@ -1,0 +1,163 @@
+.curw {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding-top: 70px;
+}
+.left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 570px;
+  height: 220px;
+  box-sizing: border-box;
+  padding-right: 84px;
+  border-right: 2px solid rgba(255, 255, 255, 0.1);
+
+  .detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    p {
+      margin: 0;
+      padding: 0;
+    }
+    .temp {
+      font-size: 96px;
+      color: #5dcbf1;
+      line-height: 104px;
+    }
+    .weather {
+      font-size: 28px;
+      color: #f9fafb;
+    }
+    .renge {
+      font-size: 28px;
+      color: #f9fafb;
+    }
+  }
+
+  .icon {
+    div {
+      width: 172px;
+      height: 172px;
+      background-repeat: no-repeat;
+      background-size: 100%;
+    }
+  }
+}
+.right {
+  flex: 1;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding-left: 80px;
+
+  .it {
+    display: flex;
+    & > div {
+      flex: 1;
+      line-height: 57px;
+    }
+    .k {
+      font-size: 28px;
+      color: #b5c0ca;
+    }
+    .v {
+      span {
+        font-size: 36px;
+        color: #f9fafb;
+      }
+      i {
+        font-style: normal;
+        font-size: 20px;
+        color: #f9fafb;
+      }
+    }
+  }
+}
+.tags {
+  font-size: 24px;
+  color: #f9fafb;
+  padding: 0 12px;
+  display: inline-block;
+  min-width: 96px;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 26px;
+  height: 40px;
+  line-height: 36px;
+}
+.yellow {
+  background-color: #636363;
+  border: solid 2px #ffdc68;
+}
+.green {
+  background-color: rgba(15, 195, 115, 0.15);
+  border: solid 2px #0fc373;
+}
+.red {
+  background-color: rgba(255, 108, 108, 0.15);
+  border: solid 2px #ff6c6c;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 56px;
+  padding-bottom: 80px;
+
+  & > div {
+    width: 344px;
+    height: 428px;
+    border: solid 2px rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+    padding-top: 30px;
+  }
+  p {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .day {
+    font-size: 28px;
+    color: #ffffff;
+    line-height: 40px;
+    margin-bottom: 10px;
+  }
+  .date {
+    font-size: 22px;
+    line-height: 30px;
+    color: #b5c0ca;
+  }
+
+  .wiocn {
+    width: 130px;
+    height: 108px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin: 25px auto;
+  }
+  .rain {
+    font-size: 26px;
+    color: #ffffff;
+    line-height: 38px;
+    margin-bottom: 10px;
+  }
+  .tempRange {
+    font-size: 32px;
+    color: #ffffff;
+    line-height: 46px;
+    margin-bottom: 10px;
+  }
+  .hid {
+    font-size: 22px;
+    color: #b5c0ca;
+    line-height: 30px;
+  }
+}

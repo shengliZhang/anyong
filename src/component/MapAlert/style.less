@@ -1,0 +1,85 @@
+.Container {
+  width: 450px;
+  height: 530px;
+  top: 815px;
+  left: 1030px;
+
+  .alartContainer {
+    position: relative;
+    width: 450px;
+    height: 530px;
+    margin: 0;
+    padding: 0;
+    background-color: #ededed;
+    border-radius: 10px;
+    border: solid 2px #b8cce0;
+    box-sizing: border-box;
+  }
+  .closed {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 20px;
+    height: 20px;
+    background-image: url('../../assets/close.svg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  .title {
+    width: 100%;
+    padding: 30px 0 28px;
+    box-sizing: border-box;
+    p {
+      text-align: center;
+      font-size: 28px;
+      color: #4d4d4d;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  .qrcodes {
+    margin: 0 auto;
+    width: 290px;
+    height: 290px;
+    border-radius: 8px;
+    border: solid 2px #cccccc;
+    padding: 14px;
+    box-sizing: border-box;
+    & > div {
+      background: #fff;
+    }
+  }
+
+  .deskName {
+    padding-top: 14px;
+    text-align: center;
+    font-size: 36px;
+    color: #4d4d4d;
+  }
+
+  :global {
+    .ant-modal {
+      width: 450px;
+      height: 530px;
+      padding: 0;
+      margin: 0;
+      top: 0;
+      background: none;
+    }
+    .ant-modal-content {
+      background: none;
+      width: 450px;
+      height: 530px;
+      padding: 0;
+      margin: 0;
+    }
+    .ant-modal-body {
+      background: none;
+      width: 450px;
+      height: 530px;
+      padding: 0;
+      margin: 0;
+    }
+  }
+}

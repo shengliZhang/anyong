@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="42px" viewBox="0 0 22 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <g id="搜索人员" transform="translate(-2708.000000, -1359.000000)" stroke="#59C5EB" stroke-width="2.7">
+            <g id="编组-26" transform="translate(2616.000000, 1292.000000)">
+                <g id="编组-27" transform="translate(80.000000, 49.000000)">
+                    <g id="编组-23" transform="translate(0.000000, 14.000000)">
+                        <g id="温度计_thermometer" transform="translate(0.000000, 2.000000)">
+                            <g id="编组" transform="translate(13.416667, 3.833333)">
+                                <path d="M3.83333333,21.0826314 L3.83333333,5.75 C3.83333333,2.57436269 6.40769602,0 9.58333333,0 C12.7589706,0 15.3333333,2.57436269 15.3333333,5.75 L15.3333333,21.0826314 C17.6610228,22.831027 19.1666667,25.6146825 19.1666667,28.75 C19.1666667,34.0427289 14.8760622,38.3333333 9.58333333,38.3333333 C4.29060448,38.3333333 0,34.0427289 0,28.75 C0,25.6146825 1.50564382,22.831027 3.83333333,21.0826314 Z" id="路径"></path>
+                                <line x1="9.58333333" y1="12.4583333" x2="9.58333333" y2="24.9166667" id="路径" stroke-linecap="round"></line>
+                                <circle id="椭圆形" cx="9.58333333" cy="28.75" r="3.83333333"></circle>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
