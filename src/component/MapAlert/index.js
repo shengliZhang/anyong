@@ -41,14 +41,12 @@ function MapAlert(props) {
 
   const hideModal = () => {
     //setIsShow(false);
-    console.log('hideModal invoked');
     onClosed && onClosed();
     if (timer.current) {
       clearTimeout(timer.current);
     }
   };
 
-  console.log('data is', data);
   return (
     <Modal
       closable={false}

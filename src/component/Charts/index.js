@@ -6,7 +6,6 @@ import style from './style.less';
 
 function Index({ type, data }) {
   const chartsHeight = '372px';
-  console.log('charts data is -->', data);
   return (
     <div className={style.container}>
       <div className={style.title}>
@@ -116,10 +115,14 @@ function Opts(type = 'meeting', data = []) {
       },
     },
   };
-
-  const barData = data.map((item) => item.currentDayAveRate);
-  const lineData = data.map((item) => item.currentDayMaxRate);
-  const time = data.map((item) => dayjs(item.time).format('MM.DD'));
+  let barData = [];
+  let lineData = [];
+  let time = [];
+  if (Array.isArray(data)) {
+    barData = data.map((item) => item.currentDayAveRate);
+    lineData = data.map((item) => item.currentDayMaxRate);
+    time = data.map((item) => dayjs(item.time).format('MM.DD'));
+  }
 
   const option = {
     tooltip: {

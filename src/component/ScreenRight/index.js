@@ -4,12 +4,12 @@ import Weather from '../Weather';
 import ChartsPart from '../ChartsPart';
 import style from './style.less';
 
-function Right({ weatherData, meetingUse }) {
+function Right({ weatherData, meetingUse, deskUse, floor }) {
   const swiper = useRef();
 
   useEffect(() => {
     let next = true;
-    const change = () => {
+    const slide = () => {
       if (next) {
         next = false;
         swiper.current.next();
@@ -19,19 +19,19 @@ function Right({ weatherData, meetingUse }) {
       }
     };
 
-    //const timer = setInterval(() => {
-    //  change();
-    //}, 30 * 1000);
+    const timer = setInterval(() => {
+      slide();
+    }, 30 * 1000);
 
     return () => {
-      //clearInterval(timer);
+      clearInterval(timer);
     };
   }, []);
 
   return (
     <Carousel ref={swiper} dots>
       <Weather weatherData={weatherData} />
-      <ChartsPart meetingUse={meetingUse} />
+      <ChartsPart meetingUse={meetingUse} deskUse={deskUse} floor={floor} />
     </Carousel>
   );
 }

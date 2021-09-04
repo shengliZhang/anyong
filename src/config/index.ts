@@ -17,7 +17,7 @@ export const ENV_API_HOST = !isProduction
   ? 'http://192.168.10.91:9901'
   : 'ENV_API_HOST_PLACEHOLDER__';
 export const DESK_API_HOST = !isProduction
-  ? 'http://192.168.10.91:9901'
+  ? 'http://dftestv3.dfocus.co/bookinganyong'
   : 'DESK_HOST_PLACEHOLDER__';
 export const MEETING_API_HOST = !isProduction
   ? 'http://192.168.10.91/apis'
@@ -28,5 +28,5 @@ export const DEBUGER_TIP = !isProduction ? '1' : 'DEBUGER_TIP_PLACEHOLDER__';
 
 export const appKey = '3f5052ae825dc312df8f5ab84ab1c959';
 export const mapId = '1424550523468173313';
-export const themeId = '1432959141842407426';
+export const themeId = '1427201145350803457';
 export const appName = '招商银行_SaaS平台';

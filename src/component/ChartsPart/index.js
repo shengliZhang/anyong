@@ -4,13 +4,13 @@ import formatText from '../../helpers/format';
 import Meeting from '../Meetings';
 import Desk from '../Desk';
 
-function Index({ meetingUse }) {
+function Index({ meetingUse, deskUse, floor }) {
   return (
     <div>
-      <TitleWithIcon name={`18F ${formatText('MEETING_USE')}`} />
+      <TitleWithIcon name={`${floor}F ${formatText('MEETING_USE')}`} />
       <Meeting data={meetingUse} />
-      <TitleWithIcon name={`18F ${formatText('DESK_USE')}`} />
-      <Desk />
+      <TitleWithIcon name={`${floor}F ${formatText('DESK_USE')}`} />
+      <Desk data={deskUse} />
     </div>
   );
 }

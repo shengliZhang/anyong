@@ -3,7 +3,7 @@ import style from './style.less';
 import formatText from '../../helpers/format';
 
 function Index({ data, type = 'meeting' }) {
-  console.log('Index is', data);
+  if (!data) return null;
   return (
     <div className={style.container}>
       <div className={style.left}>

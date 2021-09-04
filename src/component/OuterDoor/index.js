@@ -1,22 +1,13 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { getLocale } from 'umi';
+//import { getLocale } from 'umi';
 import formatText from '../../helpers/format';
 import { Icons, ToDay, reaps } from '../../helpers/object';
 import styles from './style.less';
 
-const week = {
-  0: '日',
-  1: '一',
-  2: '二',
-  3: '三',
-  4: '四',
-  5: '五',
-  6: '六',
-};
-
 function CureentWeather({ data }) {
-  const isZh = getLocale() === 'en-US';
+  //const isZh = getLocale() === 'en-US';
+  if (!data) return null;
   const today = ToDay();
   const currentWeather = data?.currentWeather;
   const thDay = reaps(data, '7d', []);

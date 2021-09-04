@@ -1,10 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import fengmapSDK from 'fengmap';
-import {
-  FengmapBase,
-  Fengmap3DControl,
-  //FengmapNavigation,
-} from 'react-fengmap';
+import { FengmapBase, Fengmap3DControl } from 'react-fengmap';
 import PropTypes from 'prop-types';
 import styles from './style.less';
 import {
@@ -22,9 +18,6 @@ const { UMI_PUBLIC_PATH } = require('../../config/umiconfig');
 const startPointUrl = `/${UMI_PUBLIC_PATH}/assets/startPoint.png`;
 const endPointUrl = `/${UMI_PUBLIC_PATH}/assets/endPoint.png`;
 
-//const appKey = '3f5052ae825dc312df8f5ab84ab1c959';
-//const mapId = '1402207969166958594';
-//const appName = '招商银行_SaaS平台';
 const mapServerURL = `/${UMI_PUBLIC_PATH}/maps`; // ''https://3dl.dfocus.top/api/static/maps'
 const mapThemeURL = `/${UMI_PUBLIC_PATH}/maps/themes`; // ''https://3dl.dfocus.top/api/static/themes'
 
@@ -38,11 +31,11 @@ const floorObjrever = {
 };
 const floorArr = ['18', '20'];
 const startObj = {
-  18: {
+  1: {
     x: 13522860.1654,
     y: 3652704.8798,
   },
-  20: {
+  2: {
     x: 13522871.338,
     y: 3652697.177,
   },
@@ -84,6 +77,7 @@ function Map(props) {
   }, [mapScaleLevelRange, defaultMapScale, mapHeight, mapWidth]);
 
   const mapLoad = (e, map) => {
+    console.log('load map', map);
     mapInstance.current = map;
     if (!navigation.current) {
       _createNavigation(map);
@@ -91,7 +85,6 @@ function Map(props) {
 
     map.setBackgroundColor('#fff', 0);
     const { listFloors, focusFloor } = map;
-    console.log('map is', map);
     setFloor({ listFloors, focusFloor });
     const groupID = 1;
     const startP = {
@@ -138,7 +131,6 @@ function Map(props) {
     }
 
     if (start && end) {
-      console.log('navigation is', navigation.current);
       navigation.current.drawNaviLine();
     }
   };
@@ -175,7 +167,6 @@ function Map(props) {
 
   const onFloorChange = (obj) => {
     const { gid } = obj;
-
     const startP = {
       options: {
         ...startObj[gid],
@@ -187,7 +178,7 @@ function Map(props) {
     _setRoute(startP);
     startPoniter.current = startP;
     setFloor((pre) => ({ ...pre, focusFloor: floorObjrever[gid] }));
-    handleFloorChange(obj);
+    handleFloorChange(floorObjrever[gid]);
   };
 
   const handleFloorClick = () => {
@@ -195,9 +186,10 @@ function Map(props) {
   };
 
   const onMapModalClick = (event, mapInstance) => {
+    debugger;
     const { focusFloor } = mapInstance;
-    console.log(event, mapInstance);
     const { mapCoord, target } = event;
+    console.log('event is', event);
     if (!target || !target?.FID) {
       return;
     }
@@ -255,7 +247,6 @@ function Map(props) {
     const searchReq = new fengmapSDK.FMSearchRequest();
     searchReq.FID = fid;
     searchAnalyser.query(searchReq, (reseult) => {
-      console.log('searchAnalyser', reseult);
       const endPt = {
         options: {
           size: 50,
@@ -292,13 +283,10 @@ function Map(props) {
   };
 
   useEffect(() => {
-    console.log('positionFid is', positionFid);
     if (isString(positionFid) && positionFid.length > 3) {
       searchByFid(positionFid);
     }
   }, [positionFid]);
-
-  console.log('map floor is', floor);
 
   return (
     <div className={styles.mapWaper}>
@@ -309,7 +297,7 @@ function Map(props) {
           modelSelectedEffect: false,
           key: appKey,
           appName: appName,
-          defaultThemeName: themeId, // '1408240768827236354',
+          defaultThemeName: themeId,
           mapServerURL,
           mapThemeURL,
           defaultMapScale: defaultScale,

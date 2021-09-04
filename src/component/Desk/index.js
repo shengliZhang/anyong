@@ -2,11 +2,11 @@ import React from 'react';
 import Charts from '../Charts';
 import TatolAndStatus from '../TatolAndStatus';
 
-function Deskpart() {
+function Deskpart({ data }) {
   return (
     <div>
-      <TatolAndStatus type="desk" />
-      <Charts type="desk" />
+      <TatolAndStatus data={data?.use} type="desk" />
+      <Charts data={data?.chart} type="desk" />
     </div>
   );
 }

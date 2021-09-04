@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { getLocale } from 'umi';
 import fengmapSDK from 'fengmap';
+import dayjs from 'dayjs';
 import GlobalHeader from '@/component/GlobalHeader';
 import MapAlert from '@/component/MapAlert';
+import BookModal from '@/component/BookModal';
 import ScreenRight from '@/component/ScreenRight';
 import { isObject, isArray, isString, isEqual } from '../helpers/object';
 import Map from '../component/Map';
@@ -18,6 +20,9 @@ import {
   getInnerAir,
   getMapData,
   getMeetingChart,
+  getDeskUse,
+  getDeskChart,
+  bookDesk,
 } from '../config/api';
 
 // 默认地图配色
@@ -54,17 +59,21 @@ const HomePage = ({ location }) => {
   const { query } = location;
   const mapData = useRef(null);
   const MAP = useRef(null);
-
   const mapTimer = useRef(null);
-  const mapCenterRef = useRef(null);
   const language = useRef(null);
   const weatherTimer = useRef(null);
   const buidingId = useRef(null);
   const floorChange = useRef(false);
   const [meetingUse, setMeetingUse] = useState({});
+  const [deskUse, setDeskUse] = useState({});
   const [weatherData, setWeatherData] = useState({});
   const [setFids, setSetFids] = useState('');
   const [clickData, setClickData] = useState({ show: false, data: {} });
+  const CardNoRef = useRef(null);
+  const fetchTimer = useRef(null);
+  const showMode = useRef(null);
+  const [focusFloor, setFocusFloor] = useState(18);
+  const [cardValue, setCardValue] = useState('');
 
   const _onMapLoaded = (e, map) => {
     MAP.current = map; // 保存地图
@@ -169,7 +178,6 @@ const HomePage = ({ location }) => {
         use,
         chart: mchart.model,
       });
-      console.log('mchart is', mchart);
     } catch (error) {}
   };
 
@@ -200,9 +208,11 @@ const HomePage = ({ location }) => {
    * @return {*}
    */
   const handleMapClickNode = (event, mapInstance) => {
+    if (showMode.current !== 'book') return;
     //const { focusFloor } = mapInstance;
     const { mapCoord, target } = event;
     const { FID } = target;
+    console.log('FID is', FID);
     if (!FID) {
       return;
     }
@@ -219,8 +229,9 @@ const HomePage = ({ location }) => {
       setClickData({ show: true, data: tarObj });
     }
   };
-  const handleFloorChange = (obj) => {
+  const handleFloorChange = (floor) => {
     floorChange.current = true;
+    setFocusFloor(floor);
     intervalMapData();
   };
 
@@ -261,10 +272,30 @@ const HomePage = ({ location }) => {
     } catch (error) {}
   };
 
+  const fetchDeskUseData = async () => {
+    try {
+      const { code, result } = await getDeskUse();
+      const desk = await getDeskChart();
+      let use = {};
+      if (code === 200 && isObject(result)) {
+        let total = 0;
+        Object.values(result).forEach((k) => {
+          total += k;
+        });
+        use = { ...result, total };
+      }
+      setDeskUse({
+        use,
+        chart: desk,
+      });
+    } catch (error) {}
+  };
+
   useEffect(() => {
     language.current = getLocale() === 'en-US' ? 'en' : 'zh';
-    //fetchBuidingId();
+    fetchBuidingId();
     getMeetingUseData();
+    fetchDeskUseData();
     if (weatherTimer.current) {
       clearInterval(weatherTimer.current);
     }
@@ -272,6 +303,7 @@ const HomePage = ({ location }) => {
       init(language.current);
     }, 1000 * 60 * 60);
     init(language.current);
+
     return () => {
       if (mapTimer.current) {
         clearInterval(mapTimer.current);
@@ -328,7 +360,49 @@ const HomePage = ({ location }) => {
   };
 
   const handleTabChange = (type) => {
-    console.log('tab is', type);
+    showMode.current = type;
+    if (type === 'book') {
+      //console.log(CardNoRef.current.focus());
+      CardNoRef.current.value = '';
+      CardNoRef.current.focus();
+    }
+  };
+
+  const handleCardChange = (e) => {
+    const { value } = e.target;
+    setCardValue(value);
+    debounce();
+  };
+
+  const debounce = () => {
+    if (fetchTimer.current) {
+      clearTimeout(fetchTimer.current);
+    }
+    fetchTimer.current = setTimeout(() => {
+      const opts = {
+        cardNo: cardValue,
+        reserveBeginTime: dayjs().toISOString(),
+        reserveEndTime: dayjs().add(12, 'hour').toISOString(),
+        reserveInfo: [
+          {
+            deskId: 0,
+            userType: '0',
+          },
+        ],
+        userId: 0,
+      };
+      bookByCard();
+    }, 200);
+  };
+
+  const bookByCard = async (params) => {
+    try {
+      const {} = await bookDesk(params);
+    } catch (error) {}
+  };
+
+  const handleBookModalClosed = () => {
+    setCardValue('');
   };
 
   return (
@@ -356,7 +430,7 @@ const HomePage = ({ location }) => {
 
           <SwitchTabs onChange={handleTabChange} />
 
-          <div ref={mapCenterRef} id="mapCenter" className={styles.mapCenter}>
+          <div className={styles.mapCenter}>
             <Map
               _onMapLoaded={_onMapLoaded}
               mapWidth={2057}
@@ -371,14 +445,25 @@ const HomePage = ({ location }) => {
           </div>
         </div>
         <div className={styles.right}>
-          <ScreenRight meetingUse={meetingUse} weatherData={weatherData} />
+          <ScreenRight
+            meetingUse={meetingUse}
+            deskUse={deskUse}
+            weatherData={weatherData}
+            floor={focusFloor}
+          />
         </div>
       </div>
-      <MapAlert
+      <BookModal id={cardValue} show={false} onClosed={handleBookModalClosed} />
+      <input
+        ref={CardNoRef}
+        onChange={handleCardChange}
+        className={styles.cardNo}
+      />
+      {/*<MapAlert
         show={clickData.show}
         onClosed={handleClosedAlart}
         data={clickData.data}
-      />
+      />*/}
     </div>
   );
 };

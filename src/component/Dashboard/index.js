@@ -4,7 +4,7 @@ import formatText from '../../helpers/format';
 import styles from './style.less';
 
 function Dashboard({ data }) {
-  console.log('Dashboard is', data);
+  if (!data) return null;
   return (
     <div className={styles.containers}>
       <Item
@@ -17,11 +17,11 @@ function Dashboard({ data }) {
       />
       <Item
         max={250}
-        color={PM25word(Number(data.pm25 || 0)).color} //"#FF6C6C"
+        color={PM25word(Number(data?.pm25 || 0)).color} //"#FF6C6C"
         text="PM2.5"
-        tag={PM25word(Number(data.pm25 || 0)).text} //"不合格"
+        tag={PM25word(Number(data?.pm25 || 0)).text} //"不合格"
         per="" //"ug/m³"
-        num={Number(data.pm25 || 0).toFixed(0)}
+        num={Number(data?.pm25 || 0).toFixed(0)}
       />
       <Item
         max={5000}
@@ -38,6 +38,7 @@ function Dashboard({ data }) {
 export default Dashboard;
 
 function Item({ max, color, text, tag, num, per }) {
+  if (!color && !tag && !num) return null;
   return (
     <div className={styles.warper}>
       <Progress
@@ -134,12 +135,12 @@ export function isNumber(obj) {
   return Object.prototype.toString.call(obj) === '[object Number]';
 }
 
-function NumToPercent(num, max) {
-  if (isNumber(num)) {
-    return (num / max) * 100;
-  }
-  return 0;
-}
+//function NumToPercent(num, max) {
+//  if (isNumber(num)) {
+//    return (num / max) * 100;
+//  }
+//  return 0;
+//}
 
 function CO2word(nums) {
   if (nums <= 550) {
@@ -193,37 +194,3 @@ function CO2word(nums) {
 //  }
 //  return '';
 //}
-
-function PM10word(nums) {
-  if (nums <= 50) {
-    return {
-      color: '#59deab',
-      text: formatText('HE_GE'), // '优'
-    };
-  }
-  if (nums > 50 && nums <= 75) {
-    return {
-      color: '#ffdc68',
-      text: formatText('YI_BAN'), // '优'
-    };
-  }
-  if (nums > 75 && nums <= 100) {
-    return {
-      color: '#ffdc68',
-      text: formatText('BU_HE_GE'), // '优'
-    };
-  }
-  if (nums > 100 && nums <= 150) {
-    return {
-      color: '#ffdc68',
-      text: formatText('BU_HE_GE'), // '优'
-    };
-  }
-  if (nums > 150) {
-    return {
-      color: '#ff6c6c',
-      text: formatText('ENV_BUIDING_D'), // '优'
-    }; // '重度污染'
-  }
-  return {};
-}

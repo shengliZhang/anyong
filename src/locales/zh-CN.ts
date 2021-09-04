@@ -36,4 +36,6 @@ export default {
   DESK_TOTAL: '工位总数',
   MEETING_SYQS: '会议室空间使用趋势',
   DESK_SYQS: '工位空间使用趋势',
+  BOOK: '预订',
+  REAL: '实时',
 };

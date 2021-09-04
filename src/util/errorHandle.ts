@@ -1,4 +1,4 @@
-import { notification } from 'antd';
+import { message } from 'antd';
 const codeMessage: {
   [key: number]: string;
 } = {
@@ -21,16 +21,16 @@ interface error {
  */
 const errorHandler = (error: error) => {
   if (error.name === 'BizError') {
-    notification.error({
-      message: `请求错误 ${error.data.code}`,
-      description: error.data.msg,
-    });
-    return error.data.code;
+    //message.error({
+    //  message: `请求错误 ${error.data.code}`,
+    //  description: error.data.msg,
+    //});
+    return error.data;
   }
   const { response } = error;
   const errortext = codeMessage[response.status] || response.statusText;
   const { status, url } = response;
-  notification.error({
+  message.error({
     message: `请求错误 ${status}: ${url}`,
     description: errortext,
   });

@@ -15,11 +15,6 @@ export function getInnerAir(params) {
 }
 
 export function getDeskData(params) {
-  //return request('/space/desk/list', {
-  //  method: 'get',
-  //  params,
-  //});
-
   return request(`${DESK_API_HOST}/facade/desk/list`, {
     method: 'get',
     params,
@@ -34,7 +29,7 @@ export function getBuildingId(params) {
 }
 export function getMapData() {
   return request(
-    `${DESK_API_HOST}/space/desk/list?deskBuildingId=&deskFloorId=&meetingBuildingId=&meetingFloorId=`,
+    `${ENV_API_HOST}/space/desk/list?deskBuildingId=&deskFloorId=&meetingBuildingId=&meetingFloorId=`,
     {
       method: 'get',
     }
@@ -55,4 +50,31 @@ export function getMeetingChart(params) {
       params,
     }
   );
+}
+export function getDeskUse() {
+  return request(
+    `${ENV_API_HOST}/desk/use/count?deskBuildingId=&deskFloorId=`,
+    {
+      method: 'get',
+    }
+  );
+}
+export function getDeskChart() {
+  return request(`${ENV_API_HOST}/desk/use/graph?buildingId=&floorId=`, {
+    method: 'get',
+  });
+}
+
+export function bindCardByEmail(data) {
+  return request(`${DESK_API_HOST}/facade/user/card`, {
+    method: 'post',
+    data,
+  });
+}
+
+export function bookDesk(data) {
+  return request(`${DESK_API_HOST}/screen/reserve`, {
+    method: 'post',
+    data,
+  });
 }

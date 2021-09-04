@@ -33,6 +33,8 @@ export default {
   MAX_USE: 'Peak occupancy rate',
   MEETING_TOTAL: 'Total',
   DESK_TOTAL: 'Total',
-  MEETING_SYQS: 'Conference room space usage trends',
-  DESK_SYQS: 'Trends in the use of workstation space',
+  MEETING_SYQS: 'Conference space trends',
+  DESK_SYQS: 'Trends of workstation space',
+  BOOK: 'Book',
+  REAL: 'Real',
 };

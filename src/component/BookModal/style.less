@@ -1,0 +1,163 @@
+.Container {
+  width: 704px;
+  height: auto;
+  top: 815px;
+  left: 1030px;
+
+  .alartContainer {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    width: 704px;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.22);
+    border-radius: 10px;
+    backdrop-filter: saturate(180%) blur(30px);
+    border: solid 2px rgba(221, 238, 255, 0.33);
+    border-radius: 10px;
+    box-sizing: border-box;
+  }
+  .closed {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 20px;
+    height: 20px;
+    background-image: url('../../assets/close.svg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+
+  .resultContainer {
+    width: 100%;
+    height: 384px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .title {
+      font-size: 40px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 30px;
+    }
+    .id {
+      font-size: 36px;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 50px;
+      margin-bottom: 30px;
+    }
+    .input {
+      margin: 0 auto;
+      width: 526px;
+      height: 96px;
+      border-radius: 8px;
+      border: solid 1px #ffffff;
+      margin-bottom: 36px;
+      &.errorBorder {
+        border: solid 2px red;
+        animation: shake 800ms ease-in-out;
+      }
+      input {
+        width: 100%;
+        font-size: 36px;
+        color: #ffffff;
+        padding: 23px;
+        text-align: center;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        height: 100%;
+        box-sizing: border-box;
+      }
+    }
+
+    .btn {
+      margin: 0 auto;
+      width: 526px;
+      height: 96px;
+      background-color: #179efc;
+      border-radius: 8px;
+      font-size: 36px;
+      line-height: 96px;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    & > p {
+      font-size: 40px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    & > i {
+      margin: 0 auto;
+      width: 100px;
+      height: 100px;
+
+      background-repeat: no-repeat;
+      background-size: 100%;
+      margin-bottom: 50px;
+    }
+
+    .success {
+      background-image: url('../../assets/success.svg');
+    }
+    .error {
+      background-image: url('../../assets/faile.svg');
+    }
+  }
+
+  :global {
+    .ant-modal {
+      width: 704px;
+      height: auto;
+      padding: 0;
+      margin: 0;
+      top: 0;
+      background: none;
+    }
+    .ant-modal-content {
+      background: none;
+      width: 704px;
+      height: auto;
+      padding: 0;
+      margin: 0;
+    }
+    .ant-modal-body {
+      background: none;
+      width: 704px;
+      height: auto;
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(+2px, 0, 0);
+  }
+  30%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(+4px, 0, 0);
+  }
+  50% {
+    transform: translate3d(-4px, 0, 0);
+  }
+}
+.tipsToBook {
+  height: 300px;
+  line-height: 300px;
+  text-align: center;
+  font-size: 36px;
+  color: #ffffff;
+}

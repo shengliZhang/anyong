@@ -5,7 +5,7 @@ import { isObject } from '../../helpers/object';
 import formatText from '../../helpers/format';
 
 function Indoor({ data, type = 'F19' }) {
-  console.log('Indoor data is', data);
+  if (!data) return null;
   const air = isObject(data) ? data[type] : {};
   return (
     <div className={styles.containers}>
