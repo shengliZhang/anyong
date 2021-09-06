@@ -23,12 +23,14 @@ import {
   getDeskUse,
   getDeskChart,
   bookDesk,
+  getFloorId,
 } from '../config/api';
 
 // 默认地图配色
 const DefaultColors = {
   0: '#59deab', // 绿色
-  3: '#ff6c6c', // 红色
+  1: '#ff6c6c', // 红色
+  2: '#59deab', // 绿色
 };
 const floorArr = ['18', '20'];
 const floorObj = {
@@ -72,6 +74,7 @@ const HomePage = ({ location }) => {
   const CardNoRef = useRef(null);
   const fetchTimer = useRef(null);
   const showMode = useRef(null);
+  const floorObject = useRef({});
   const [focusFloor, setFocusFloor] = useState(18);
   const [cardValue, setCardValue] = useState('');
 
@@ -84,9 +87,12 @@ const HomePage = ({ location }) => {
     let groupID = 1;
     if (isObject(query)) {
       if (floorArr.includes(query.f)) {
+        setFocusFloor(query.f);
         groupID = floorObj[query.f];
         map.focusGroupID = groupID;
       }
+    } else {
+      setFocusFloor(18);
     }
     //setOpacity();
   };
@@ -137,18 +143,18 @@ const HomePage = ({ location }) => {
    */
   const getDeskScreenDisplay = async () => {
     try {
-      const { success, data } = await getMapData({
-        deskFloorId: '12',
-        meetingBuildingId: '23',
-        meetingFloorId: '44',
-        buildingId: 1,
+      const { success, result } = await getMapData({
+        deskFloorId: '', //focusFloor,
+        meetingBuildingId: '',
+        meetingFloorId: '', //focusFloor,
+        deskBuildingId: '',
       });
       if (success) {
-        if (isObject(data) && isArray(data.content)) {
-          if (!isEqual(mapData.current, data.content) || floorChange.current) {
+        if (isArray(result)) {
+          if (!isEqual(mapData.current, result) || floorChange.current) {
             console.log('not same');
-            mapData.current = data.content;
-            setMapColor(data.content);
+            mapData.current = result;
+            setMapColor(result);
           } else {
             console.log('data is same');
           }
@@ -160,12 +166,16 @@ const HomePage = ({ location }) => {
   };
 
   const getMeetingUseData = async () => {
+    console.log('floorObject.current 会议室 is', floorObject.current);
     try {
       const { code, model } = await getMeetingUse({
         buildingId: '',
-        floorId: '',
+        floorId: floorObject.current[focusFloor] || '',
       });
-      const mchart = await getMeetingChart();
+      const mchart = await getMeetingChart({
+        buildingId: '',
+        floorId: floorObject.current[focusFloor] || '',
+      });
       let use = {};
       if (code === 200 && isObject(model)) {
         let total = 0;
@@ -233,6 +243,8 @@ const HomePage = ({ location }) => {
     floorChange.current = true;
     setFocusFloor(floor);
     intervalMapData();
+    getMeetingUseData();
+    fetchDeskUseData();
   };
 
   const fetchBuidingId = async () => {
@@ -273,9 +285,16 @@ const HomePage = ({ location }) => {
   };
 
   const fetchDeskUseData = async () => {
+    console.log('floorObject.current 工位 is', floorObject.current);
     try {
-      const { code, result } = await getDeskUse();
-      const desk = await getDeskChart();
+      const { code, result } = await getDeskUse({
+        deskBuildingId: '',
+        deskFloorId: floorObject.current[focusFloor] || '',
+      });
+      const desk = await getDeskChart({
+        buildingId: '',
+        floorId: floorObject.current[focusFloor] || '',
+      });
       let use = {};
       if (code === 200 && isObject(result)) {
         let total = 0;
@@ -291,11 +310,30 @@ const HomePage = ({ location }) => {
     } catch (error) {}
   };
 
+  const fetchFloorId = () => {
+    return getFloorId().then(({ code, model }) => {
+      if (code === 200) {
+        console.log('fetchFloorId is', model);
+        const florObj = {};
+        if (isArray(model)) {
+          model.forEach((item) => {
+            const { floorNum, floorId } = item;
+            florObj[floorNum] = floorId;
+          });
+          floorObject.current = florObj;
+        }
+      }
+    });
+  };
+
   useEffect(() => {
     language.current = getLocale() === 'en-US' ? 'en' : 'zh';
     fetchBuidingId();
-    getMeetingUseData();
-    fetchDeskUseData();
+    fetchFloorId().then(() => {
+      getMeetingUseData();
+      fetchDeskUseData();
+    });
+
     if (weatherTimer.current) {
       clearInterval(weatherTimer.current);
     }
@@ -355,6 +393,7 @@ const HomePage = ({ location }) => {
     setSetFids(fid);
     //setSetFids('5432523601317');
   };
+
   const handleFrash = () => {
     intervalMapData();
   };

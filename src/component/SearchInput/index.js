@@ -14,7 +14,6 @@ import { isObject, isArray } from '../../helpers/object';
 //import PropTypes from 'prop-types'
 
 function SearchInput({ debounceTimeout = 100, onSelect, buildingId }) {
-
   const [List, setList] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [showWarper, setShowWarper] = useState(false);
@@ -49,6 +48,7 @@ function SearchInput({ debounceTimeout = 100, onSelect, buildingId }) {
   }, [showWarper]);
 
   const handleSelectItem = (item) => {
+    console.log('handleSelectItem', item);
     autoClose();
     setInputValue(item.userName);
     setShowWarper(false);

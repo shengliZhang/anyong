@@ -16,7 +16,9 @@ function SwitchTabs({ onChange }) {
     <div className={styles.container}>
       <div
         onClick={handleItemClick('real')}
-        className={`${styles.item} ${avtive === 'real' ? styles.active : ''}`}
+        className={`${styles.item} ${
+          avtive === 'real' ? styles.activeleft : ''
+        }`}
       >
         <div>
           <TimeUp width={40} height={30} />
@@ -25,7 +27,9 @@ function SwitchTabs({ onChange }) {
       </div>
       <div
         onClick={handleItemClick('book')}
-        className={`${styles.item} ${avtive === 'book' ? styles.active : ''}`}
+        className={`${styles.item} ${
+          avtive === 'book' ? styles.activeRight : ''
+        }`}
       >
         <div>
           <Book width={34} height={30} />

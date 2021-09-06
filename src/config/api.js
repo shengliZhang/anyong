@@ -27,13 +27,11 @@ export function getBuildingId(params) {
     params,
   });
 }
-export function getMapData() {
-  return request(
-    `${ENV_API_HOST}/space/desk/list?deskBuildingId=&deskFloorId=&meetingBuildingId=&meetingFloorId=`,
-    {
-      method: 'get',
-    }
-  );
+export function getMapData(params) {
+  return request(`${ENV_API_HOST}/space/desk/list`, {
+    method: 'get',
+    params,
+  });
 }
 
 export function getMeetingUse(params) {
@@ -42,26 +40,29 @@ export function getMeetingUse(params) {
     params,
   });
 }
-export function getMeetingChart(params) {
-  return request(
-    `${MEETING_API_HOST}/anyong/screen/space/use?buildingId=&floorId=`,
-    {
-      method: 'get',
-      params,
-    }
-  );
-}
-export function getDeskUse() {
-  return request(
-    `${ENV_API_HOST}/desk/use/count?deskBuildingId=&deskFloorId=`,
-    {
-      method: 'get',
-    }
-  );
-}
-export function getDeskChart() {
-  return request(`${ENV_API_HOST}/desk/use/graph?buildingId=&floorId=`, {
+
+export function getFloorId(params) {
+  return request(`${MEETING_API_HOST}/api/v1/external/floors`, {
     method: 'get',
+  });
+}
+
+export function getMeetingChart(params) {
+  return request(`${MEETING_API_HOST}/anyong/screen/space/use`, {
+    method: 'get',
+    params,
+  });
+}
+export function getDeskUse(params) {
+  return request(`${ENV_API_HOST}/desk/use/count`, {
+    method: 'get',
+    params,
+  });
+}
+export function getDeskChart(params) {
+  return request(`${ENV_API_HOST}/desk/use/graph`, {
+    method: 'get',
+    params,
   });
 }
 

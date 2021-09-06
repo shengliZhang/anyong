@@ -3,9 +3,9 @@
   top: 110px;
   left: 90px;
   width: 192px;
-	height: 90px;
-	background-color: rgba(255, 255, 255, 0.1);
-	border: solid 2px #979797;
+  height: 90px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: solid 2px #979797;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -20,7 +20,13 @@
   box-sizing: border-box;
   padding-top: 13px;
   border-radius: 10px;
-  &.active {
+  &.activeleft {
+    margin-left: -2px;
+    background: #179efc;
+    border: 1px solid #179efc;
+  }
+  &.activeRight {
+    margin-right: -2px;
     background: #179efc;
     border: 1px solid #179efc;
   }

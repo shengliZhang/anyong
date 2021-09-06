@@ -32,12 +32,12 @@ const floorObjrever = {
 const floorArr = ['18', '20'];
 const startObj = {
   1: {
-    x: 13522860.1654,
-    y: 3652704.8798,
+    x: 12958765.6677,
+    y: 4852658.424,
   },
   2: {
-    x: 13522871.338,
-    y: 3652697.177,
+    x: 12958765.7135,
+    y: 4852658.2874,
   },
 };
 function Map(props) {
@@ -96,7 +96,6 @@ function Map(props) {
       },
     };
     startPoniter.current = startP;
-    //setStart(startP);
     _setRoute(startP, null);
     _onMapLoaded(e, map);
   };
