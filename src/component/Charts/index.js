@@ -127,6 +127,7 @@ function Opts(type = 'meeting', data = []) {
   const option = {
     tooltip: {
       trigger: 'axis',
+      show: false,
     },
     animation: false,
     grid: {

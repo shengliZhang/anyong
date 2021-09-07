@@ -4,39 +4,44 @@ import styles from './style.less';
 import { bindCardByEmail } from '../../config/api';
 import formatText from '../../helpers/format';
 
+const comEmu = {
+  text: Tips,
+  success: Success,
+  faile: Faile,
+  book: Book,
+};
 function BookModal(props) {
-  const { show, data = {}, onClosed, id } = props;
-  //const { status } = data;
+  const { show, deskData = {}, onClosed, id, bindSuccess } = props;
+  const { status, data, type = 'text' } = deskData;
   const [isShow, setIsShow] = useState(false);
+  const [comType, setType] = useState('text');
   const timer = useRef(null);
   useEffect(() => {
-    const lisinerFun = () => {
-      setIsShow(false);
-      if (timer.current) {
-        clearTimeout(timer.current);
-      }
-    };
+    //const lisinerFun = () => {
+    //  setIsShow(false);
+    //  if (timer.current) {
+    //    clearTimeout(timer.current);
+    //  }
+    //};
     if (show) {
       setIsShow(true);
-      timer.current = setTimeout(() => {
-        setIsShow(false);
-        onClosed && onClosed();
-      }, 1000 * 60 * 360000);
+      startTimer();
+      setType(type);
       //document.body.addEventListener('click', lisinerFun, true);
     } else {
       setIsShow(false);
       if (timer.current) {
         clearTimeout(timer.current);
       }
-      document.body.removeEventListener('click', lisinerFun);
+      //document.body.removeEventListener('click', lisinerFun);
     }
     return () => {
-      document.body.removeEventListener('click', lisinerFun);
+      //document.body.removeEventListener('click', lisinerFun);
       if (timer.current) {
         clearTimeout(timer.current);
       }
     };
-  }, [show, onClosed]);
+  }, [show, onClosed, type]);
 
   const hideModal = () => {
     //setIsShow(false);
@@ -46,6 +51,30 @@ function BookModal(props) {
     }
   };
 
+  const handleBindSuccess = () => {
+    setType('success');
+    bindSuccess();
+  };
+  const handleBindFaile = (msg) => {
+    //message.warn(msg, 30000);
+    setType('faile');
+  };
+
+  const startTimer = () => {
+    if (timer.current) {
+      clearTimeout(timer.current);
+    }
+    timer.current = setTimeout(() => {
+      setIsShow(false);
+      onClosed && onClosed();
+    }, 1000 * 30);
+  };
+
+  const handleClearTimer = () => {
+    startTimer();
+  };
+
+  console.log('comType is', comType, props);
   return (
     <Modal
       closable={false}
@@ -69,10 +98,17 @@ function BookModal(props) {
           }}
           className={styles.closed}
         />
-        <Tips />
-        {/*<Success />*/}
-        {/*<Faile />*/}
-        {/*<Book id={id} />*/}
+        {comType === 'text' && <Tips />}
+        {comType === 'success' && <Success />}
+        {comType === 'faile' && <Faile />}
+        {comType === 'book' && (
+          <Book
+            id={id}
+            onSuccess={handleBindSuccess}
+            onFaile={handleBindFaile}
+            clearTimer={handleClearTimer}
+          />
+        )}
       </div>
     </Modal>
   );
@@ -100,7 +136,7 @@ function Faile(params) {
     </div>
   );
 }
-function Book({ id }) {
+function Book({ id, clearTimer, onSuccess, onFaile }) {
   const pattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
   const [email, setValue] = useState('');
   const [errTip, setErrTip] = useState(false);
@@ -113,6 +149,7 @@ function Book({ id }) {
   const handleInputChange = (e) => {
     const { value } = e.target;
     setValue(value);
+    clearTimer();
     if (errTip) {
       setErrTip(false);
     }
@@ -132,8 +169,10 @@ function Book({ id }) {
           email,
         });
         if (bindRes?.code === 200) {
+          onSuccess && onSuccess();
         } else {
           //message.error(bindRes.message);
+          onFaile && onFaile(bindRes.message);
         }
       } catch (error) {
         console.error('bindCardByEmail error', error);

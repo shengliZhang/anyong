@@ -71,10 +71,14 @@ const HomePage = ({ location }) => {
   const [deskUse, setDeskUse] = useState({});
   const [weatherData, setWeatherData] = useState({});
   const [setFids, setSetFids] = useState('');
-  const [clickData, setClickData] = useState({ show: false, data: {} });
+  const [clickData, setClickData] = useState({
+    show: false,
+    data: { type: 'text' },
+  });
   const CardNoRef = useRef(null);
   const fetchTimer = useRef(null);
   const showMode = useRef(null);
+  const clickMapNode = useRef(null);
   const floorObject = useRef({});
   const [focusFloor, setFocusFloor] = useState(18);
   const [cardValue, setCardValue] = useState('');
@@ -144,14 +148,15 @@ const HomePage = ({ location }) => {
         if (isArray(result)) {
           if (!isEqual(mapData.current, result) || floorChange.current) {
             console.log('not same');
-            const mapData = result.filter((item) => {
+            const datas = result.filter((item) => {
               if (Array.isArray(item.fids)) {
                 return !!item.fids[0];
               }
               return !!item.fids;
             });
-            mapData.current = mapData;
-            setMapColor(mapData);
+
+            mapData.current = datas;
+            setMapColor(datas);
           } else {
             console.log('data is same');
           }
@@ -185,6 +190,10 @@ const HomePage = ({ location }) => {
         chart: mchart.model,
       });
     } catch (error) {}
+  };
+
+  const handleBindSuccess = () => {
+    debounce();
   };
 
   const intervalMapData = () => {
@@ -223,16 +232,19 @@ const HomePage = ({ location }) => {
       return;
     }
     const arr = mapData.current;
-
     const tarObj =
       arr.find((item) => {
         if (isArray(item.fids) && item.fids.includes(FID)) return true;
         if (isString(item.fids) && item.fids === FID) return true;
         return false;
       }) || {};
-    if (Object.values(tarObj).length > 0 && tarObj.status == 0) {
-      //setMeetingDetail({ ...tarObj, showAlert: true });
-      setClickData({ show: true, data: tarObj });
+    if (Object.values(tarObj).length > 0 && tarObj.status == 2) {
+      setClickData({ show: true, data: { data: tarObj, type: 'text' } });
+      clickMapNode.current = tarObj;
+      setTimeout(() => {
+        CardNoRef.current.value = '';
+        CardNoRef.current.focus();
+      }, 1000);
     }
   };
   const handleFloorChange = (floor) => {
@@ -355,7 +367,7 @@ const HomePage = ({ location }) => {
   };
 
   const handleClosedAlart = () => {
-    setClickData({ show: false, data: {} });
+    setClickData({ show: false, data: { type: 'text' } });
   };
   const handleSelectUser = (user) => {
     const { fids, floorName } = user;
@@ -394,7 +406,6 @@ const HomePage = ({ location }) => {
   const handleTabChange = (type) => {
     showMode.current = type;
     if (type === 'book') {
-      //console.log(CardNoRef.current.focus());
       CardNoRef.current.value = '';
       CardNoRef.current.focus();
     }
@@ -407,34 +418,51 @@ const HomePage = ({ location }) => {
   };
 
   const debounce = () => {
+    if (!clickMapNode.current) {
+      return;
+    }
     if (fetchTimer.current) {
       clearTimeout(fetchTimer.current);
     }
     fetchTimer.current = setTimeout(() => {
       const opts = {
         cardNo: cardValue,
-        reserveBeginTime: dayjs().toISOString(),
-        reserveEndTime: dayjs().add(12, 'hour').toISOString(),
+        reserveBeginTime: dayjs().format('YYYY-MM-DD hh:mm:ss'),
+        reserveEndTime: dayjs().add(12, 'hour').format('YYYY-MM-DD hh:mm:ss'),
         reserveInfo: [
           {
-            deskId: 0,
+            deskId: clickMapNode.current.id,
             userType: '0',
           },
         ],
-        userId: 0,
       };
-      bookByCard();
+      bookByCard(opts);
     }, 200);
   };
 
   const bookByCard = async (params) => {
     try {
-      const {} = await bookDesk(params);
-    } catch (error) {}
+      const { code } = await bookDesk(params);
+      if (code === 200) {
+        setClickData((prev) => ({
+          show: true,
+          data: { ...prev.data, type: 'success' },
+        }));
+        intervalMapData();
+      } else {
+        setClickData((prev) => ({
+          show: true,
+          data: { ...prev.data, type: 'book' },
+        }));
+      }
+    } catch (error) {
+      console.log('bookByCard', error);
+    }
   };
 
   const handleBookModalClosed = () => {
     setCardValue('');
+    handleClosedAlart();
   };
 
   return (
@@ -485,7 +513,13 @@ const HomePage = ({ location }) => {
           />
         </div>
       </div>
-      <BookModal id={cardValue} show={false} onClosed={handleBookModalClosed} />
+      <BookModal
+        id={cardValue}
+        show={clickData.show}
+        deskData={clickData.data}
+        onClosed={handleBookModalClosed}
+        bindSuccess={handleBindSuccess}
+      />
       <input
         ref={CardNoRef}
         onChange={handleCardChange}

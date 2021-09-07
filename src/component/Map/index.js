@@ -185,10 +185,8 @@ function Map(props) {
   };
 
   const onMapModalClick = (event, mapInstance) => {
-    debugger;
     const { focusFloor } = mapInstance;
     const { mapCoord, target } = event;
-    console.log('event is', event);
     if (!target || !target?.FID) {
       return;
     }
@@ -308,7 +306,7 @@ function Map(props) {
           enableMapPinch: false, // 缩放
           enableMapIncline: true, // 倾斜
           enableMapPan: false, // 移动
-          enableMapSingleTap: false, //不可单击
+          enableMapSingleTap: true, //不可单击
         }}
         style={{
           width: `${width}px`,
@@ -323,7 +321,7 @@ function Map(props) {
         <Fengmap3DControl
           ctrlOptions={{
             position: fengmapSDK.controlPositon.RIGHT_BOTTOM,
-            imgURL: `${UMI_PUBLIC_PATH}/assets/`,
+            imgURL: './assets/',
             init2D: true,
             viewModeButtonNeeded: true,
             groupsButtonNeeded: false,
