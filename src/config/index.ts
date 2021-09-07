@@ -28,5 +28,5 @@ export const DEBUGER_TIP = !isProduction ? '1' : 'DEBUGER_TIP_PLACEHOLDER__';
 
 export const appKey = '3f5052ae825dc312df8f5ab84ab1c959';
 export const mapId = '1424550523468173313';
-export const themeId = '1427201145350803457';
+export const themeId = '1432959141842407426';
 export const appName = '招商银行_SaaS平台';

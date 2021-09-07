@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { getLocale } from 'umi';
 import fengmapSDK from 'fengmap';
 import dayjs from 'dayjs';
+import { message } from 'antd';
 import GlobalHeader from '@/component/GlobalHeader';
 import MapAlert from '@/component/MapAlert';
 import BookModal from '@/component/BookModal';
@@ -94,7 +95,6 @@ const HomePage = ({ location }) => {
     } else {
       setFocusFloor(18);
     }
-    //setOpacity();
   };
 
   /**
@@ -104,7 +104,6 @@ const HomePage = ({ location }) => {
    */
   const setMapColor = (data) => {
     const serverData = [...data];
-
     const request = { types: ['model'] };
     const groupId = MAP.current.focusGroupID;
     fengmapSDK.MapUtil.search(MAP.current, groupId, request, (result) => {
@@ -114,20 +113,12 @@ const HomePage = ({ location }) => {
           const { target } = model;
           const { FID } = target;
           for (let key of serverData) {
-            if (
-              Array.isArray(key?.fids) &&
-              key.fids.includes(FID) &&
-              (key?.status == 0 || key?.status == 3)
-            ) {
+            if (Array.isArray(key?.fids) && key.fids.includes(FID)) {
               model?.target?.setColor &&
                 model.target.setColor(DefaultColors[key.status], 1);
               model?.setColor && model.setColor(DefaultColors[key.status], 1);
             }
-            if (
-              key?.fids &&
-              key.fids === FID &&
-              (key?.status == 0 || key?.status == 3)
-            ) {
+            if (key?.fids && key.fids === FID) {
               model?.target?.setColor &&
                 model.target.setColor(DefaultColors[key.status], 1);
               model?.setColor && model.setColor(DefaultColors[key.status], 1);
@@ -153,8 +144,14 @@ const HomePage = ({ location }) => {
         if (isArray(result)) {
           if (!isEqual(mapData.current, result) || floorChange.current) {
             console.log('not same');
-            mapData.current = result;
-            setMapColor(result);
+            const mapData = result.filter((item) => {
+              if (Array.isArray(item.fids)) {
+                return !!item.fids[0];
+              }
+              return !!item.fids;
+            });
+            mapData.current = mapData;
+            setMapColor(mapData);
           } else {
             console.log('data is same');
           }
@@ -166,7 +163,6 @@ const HomePage = ({ location }) => {
   };
 
   const getMeetingUseData = async () => {
-    console.log('floorObject.current 会议室 is', floorObject.current);
     try {
       const { code, model } = await getMeetingUse({
         buildingId: '',
@@ -218,7 +214,7 @@ const HomePage = ({ location }) => {
    * @return {*}
    */
   const handleMapClickNode = (event, mapInstance) => {
-    if (showMode.current !== 'book') return;
+    //if (showMode.current !== 'book') return;
     //const { focusFloor } = mapInstance;
     const { mapCoord, target } = event;
     const { FID } = target;
@@ -365,11 +361,17 @@ const HomePage = ({ location }) => {
     const { fids, floorName } = user;
     if (isString(floorName)) {
       const floor = floorName.replace(/[^0-9]/gi, '');
-      if (
-        floorArr.includes(floor) &&
-        floorObj[floor] !== MAP.current.focusGroupID
-      ) {
-        MAP.current.focusGroupID = floorObj[floor];
+      if (floorArr.includes(floor)) {
+        if (floorObj[floor] !== MAP.current.focusGroupID) {
+          message.warning(
+            <div className={styles.searchWaring}>
+              您所搜素的员工不在本楼层，请前往{floor}F楼层大屏搜索
+            </div>,
+            3
+          );
+          return;
+        }
+        //MAP.current.focusGroupID = floorObj[floor];
         setTimeout(() => {
           let fid = '';
           if (isString(fids)) {
@@ -383,15 +385,6 @@ const HomePage = ({ location }) => {
         return;
       }
     }
-    let fid = '';
-    if (isString(fids)) {
-      fid = fids;
-    }
-    if (isArray(fids) && fids.length > 0) {
-      fid = fids[0];
-    }
-    setSetFids(fid);
-    //setSetFids('5432523601317');
   };
 
   const handleFrash = () => {

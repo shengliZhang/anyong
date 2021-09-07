@@ -133,7 +133,7 @@ function Book({ id }) {
         });
         if (bindRes?.code === 200) {
         } else {
-          message.error(bindRes.message);
+          //message.error(bindRes.message);
         }
       } catch (error) {
         console.error('bindCardByEmail error', error);

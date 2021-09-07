@@ -70,6 +70,11 @@
   }
 }
 
+.searchWaring {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 34px;
+}
+
 .cardNo {
   position: fixed;
   top: 200px;
@@ -81,4 +86,26 @@
   background-color: transparent;
   color: #fff;
   opacity: 0;
+}
+
+:global {
+  .ant-message-notice-content {
+    width: 1450px;
+    height: 96px;
+    background-color: rgba(255, 255, 255, 0.14);
+    border-radius: 5px;
+    border: solid 2px rgba(221, 238, 255, 0.33);
+    padding: 0;
+    .ant-message-warning {
+      width: 1450px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      padding-left: 40px;
+      span {
+        font-size: 34px !important;
+      }
+    }
+  }
 }

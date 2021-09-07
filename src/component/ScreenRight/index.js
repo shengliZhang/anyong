@@ -6,8 +6,9 @@ import style from './style.less';
 
 function Right({ weatherData, meetingUse, deskUse, floor }) {
   const swiper = useRef();
+  const timer = useRef();
 
-  useEffect(() => {
+  const intervalFun = () => {
     let next = true;
     const slide = () => {
       if (next) {
@@ -19,16 +20,28 @@ function Right({ weatherData, meetingUse, deskUse, floor }) {
       }
     };
 
-    const timer = setInterval(() => {
+    timer.current = setInterval(() => {
       slide();
     }, 30 * 1000);
+  };
 
+  useEffect(() => {
+    intervalFun();
     return () => {
-      clearInterval(timer);
+      clearInterval(timer.current);
     };
   }, []);
 
+  const handleChange = (type) => {
+    //console.log('handleChange', type);
+    //if (timer.current) {
+    //  clearInterval(timer.current);
+    //}
+    //intervalFun(type);
+  };
+
   return (
+    // onSwipe={handleChange}
     <Carousel ref={swiper} dots>
       <Weather weatherData={weatherData} />
       <ChartsPart meetingUse={meetingUse} deskUse={deskUse} floor={floor} />

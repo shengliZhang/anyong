@@ -7,10 +7,10 @@ export const request: RequestConfig = {
   //prefix: ENV_API_HOST,
   //errorHandler,
   // 自定义端口规范
-  errorConfig: {
-    adaptor: (res) => {
-      return { ...res };
-    },
-  },
+  //errorConfig: {
+  //  adaptor: (res) => {
+  //    return { ...res };
+  //  },
+  //},
   middlewares: [],
 };

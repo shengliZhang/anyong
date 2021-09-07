@@ -30,10 +30,10 @@ const errorHandler = (error: error) => {
   const { response } = error;
   const errortext = codeMessage[response.status] || response.statusText;
   const { status, url } = response;
-  message.error({
-    message: `请求错误 ${status}: ${url}`,
-    description: errortext,
-  });
+  //message.error({
+  //  message: `请求错误 ${status}: ${url}`,
+  //  description: errortext,
+  //});
 };
 
 export default errorHandler;
