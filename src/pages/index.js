@@ -238,8 +238,19 @@ const HomePage = ({ location }) => {
         return false;
       }) || {};
     if (Object.values(tarObj).length > 0 && tarObj.status == 2) {
-      setClickData({ show: true, data: { data: tarObj, type: 'text' } });
-      clickMapNode.current = tarObj;
+      console.log('tarObj iiss -->>', tarObj);
+      clickMapNode.current = {
+        ...tarObj,
+        startTime: dayjs().add(5, 'minute').format('YYYY-MM-DD hh:mm:ss'),
+        endTime: dayjs()
+          .add(5, 'minute')
+          .add(12, 'hour')
+          .format('YYYY-MM-DD hh:mm:ss'),
+      };
+      setClickData({
+        show: true,
+        data: { data: { ...clickMapNode.current }, type: 'text' },
+      });
       setTimeout(() => {
         CardNoRef.current.value = '';
         CardNoRef.current.focus();
@@ -426,8 +437,8 @@ const HomePage = ({ location }) => {
     fetchTimer.current = setTimeout(() => {
       const opts = {
         cardNo: cardValue,
-        reserveBeginTime: dayjs().format('YYYY-MM-DD hh:mm:ss'),
-        reserveEndTime: dayjs().add(12, 'hour').format('YYYY-MM-DD hh:mm:ss'),
+        reserveBeginTime: clickMapNode.current.startTime,
+        reserveEndTime: clickMapNode.current.endTime,
         reserveInfo: [
           {
             deskId: clickMapNode.current.id,

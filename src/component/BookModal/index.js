@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Input, message } from 'antd';
 import styles from './style.less';
 import { bindCardByEmail } from '../../config/api';
+import dayjs from 'dayjs';
 import formatText from '../../helpers/format';
 
 const comEmu = {
@@ -41,7 +42,7 @@ function BookModal(props) {
         clearTimeout(timer.current);
       }
     };
-  }, [show, onClosed, type]);
+  }, [show, type]);
 
   const hideModal = () => {
     //setIsShow(false);
@@ -50,6 +51,16 @@ function BookModal(props) {
       clearTimeout(timer.current);
     }
   };
+
+  useEffect(() => {
+    if (!data) {
+      if (timer.current) {
+        clearTimeout(timer.current);
+      }
+      setIsShow(false);
+      onClosed && onClosed();
+    }
+  }, [data]);
 
   const handleBindSuccess = () => {
     setType('success');
@@ -98,7 +109,7 @@ function BookModal(props) {
           }}
           className={styles.closed}
         />
-        {comType === 'text' && <Tips />}
+        {comType === 'text' && <Tips data={data} />}
         {comType === 'success' && <Success />}
         {comType === 'faile' && <Faile />}
         {comType === 'book' && (
@@ -116,8 +127,19 @@ function BookModal(props) {
 
 export default BookModal;
 
-function Tips(params) {
-  return <div className={styles.tipsToBook}>请刷卡预订此工位</div>;
+function Tips({ data }) {
+  console.log('Tips data is', data);
+  if (!data) return null;
+  return (
+    <div className={styles.tipsToBook}>
+      <div className={styles.tipTit}>请刷卡预订此工位</div>
+      <div className={styles.tipName}>{data.name}</div>
+      <div className={styles.tipTime}>
+        {dayjs(data.startTime).format('YYYY-MM-DD hh:mm')}
+      </div>
+      <div className={styles.tipDef}>默认时长12小时</div>
+    </div>
+  );
 }
 
 function Success(params) {
