@@ -223,11 +223,10 @@ const HomePage = ({ location }) => {
    * @return {*}
    */
   const handleMapClickNode = (event, mapInstance) => {
-    //if (showMode.current !== 'book') return;
+    if (showMode.current !== 'book') return;
     //const { focusFloor } = mapInstance;
     const { mapCoord, target } = event;
     const { FID } = target;
-    console.log('FID is', FID);
     if (!FID) {
       return;
     }
@@ -443,6 +442,7 @@ const HomePage = ({ location }) => {
   const bookByCard = async (params) => {
     try {
       const { code } = await bookDesk(params);
+      CardNoRef.current.blur();
       if (code === 200) {
         setClickData((prev) => ({
           show: true,
@@ -519,6 +519,7 @@ const HomePage = ({ location }) => {
         deskData={clickData.data}
         onClosed={handleBookModalClosed}
         bindSuccess={handleBindSuccess}
+        inputDom={CardNoRef.current}
       />
       <input
         ref={CardNoRef}
