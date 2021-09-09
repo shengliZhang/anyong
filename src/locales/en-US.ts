@@ -20,8 +20,8 @@ export default {
   LOCATION: 'Shanghai',
   YOU: 'Good',
   LIANG: 'Moderate',
-  MEETING_USE: '会议室使用情况s',
-  DESK_USE: '工位使用情况s',
+  MEETING_USE: 'Conference room usage',
+  DESK_USE: 'Station usage',
   ENV_BUIDING_Y: 'Good',
   ENV_BUIDING_L: 'Moderate',
   ENV_BUIDING_Zt: 'Poor',
@@ -37,4 +37,12 @@ export default {
   DESK_SYQS: 'Trends of workstation space',
   BOOK: 'Book',
   REAL: 'Real',
+
+  SHUAKA: 'Please swipe card',
+  DEFAULT_BOOK_TIME: 'The default duration is 12 hours',
+  SUCCESS: 'booking succeed',
+  FAILE: 'Booking failed',
+  BIND_EMAIL: 'Please bind email',
+  INPUT_EMAIL: 'Please input your email',
+  CONFIRM: 'Ok',
 };

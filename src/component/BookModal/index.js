@@ -18,12 +18,6 @@ function BookModal(props) {
   const [comType, setType] = useState('text');
   const timer = useRef(null);
   useEffect(() => {
-    //const lisinerFun = () => {
-    //  setIsShow(false);
-    //  if (timer.current) {
-    //    clearTimeout(timer.current);
-    //  }
-    //};
     if (show) {
       setIsShow(true);
       startTimer();
@@ -63,11 +57,10 @@ function BookModal(props) {
   }, [data]);
 
   const handleBindSuccess = () => {
-    setType('success');
+    //setType('success');
     bindSuccess();
   };
   const handleBindFaile = (msg) => {
-    //message.warn(msg, 30000);
     setType('faile');
   };
 
@@ -132,12 +125,12 @@ function Tips({ data }) {
   if (!data) return null;
   return (
     <div className={styles.tipsToBook}>
-      <div className={styles.tipTit}>请刷卡预订此工位</div>
+      <div className={styles.tipTit}>{formatText('SHUAKA')}</div>
       <div className={styles.tipName}>{data.name}</div>
       <div className={styles.tipTime}>
         {dayjs(data.startTime).format('YYYY-MM-DD hh:mm')}
       </div>
-      <div className={styles.tipDef}>默认时长12小时</div>
+      <div className={styles.tipDef}>{formatText('DEFAULT_BOOK_TIME')}</div>
     </div>
   );
 }
@@ -146,7 +139,7 @@ function Success(params) {
   return (
     <div className={styles.resultContainer}>
       <i className={styles.success} />
-      <p>预订成功</p>
+      <p>{formatText('SUCCESS')}</p>
     </div>
   );
 }
@@ -154,7 +147,7 @@ function Faile(params) {
   return (
     <div className={styles.resultContainer}>
       <i className={styles.error} />
-      <p>预订失败</p>
+      <p>{formatText('FAILE')}</p>
     </div>
   );
 }
@@ -204,7 +197,7 @@ function Book({ id, clearTimer, onSuccess, onFaile }) {
 
   return (
     <div style={{ height: '500px' }} className={styles.resultContainer}>
-      <div className={styles.title}>请绑定邮箱</div>
+      <div className={styles.title}>{formatText('BIND_EMAIL')}</div>
       <div className={styles.id}>ID：{card}</div>
       <div
         onClick={(e) => {
@@ -217,11 +210,11 @@ function Book({ id, clearTimer, onSuccess, onFaile }) {
           value={email}
           onChange={handleInputChange}
           onBlur={handleBlur}
-          placeholder="请输入邮箱"
+          placeholder={formatText('INPUT_EMAIL')}
         />
       </div>
       <div onClick={handleBind} className={styles.btn}>
-        确定
+        {formatText('CONFIRM')}
       </div>
     </div>
   );

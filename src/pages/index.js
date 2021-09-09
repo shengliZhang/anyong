@@ -193,7 +193,18 @@ const HomePage = ({ location }) => {
   };
 
   const handleBindSuccess = () => {
-    debounce();
+    const opts = {
+      cardNo: cardValue,
+      reserveBeginTime: clickMapNode.current.startTime,
+      reserveEndTime: clickMapNode.current.endTime,
+      reserveInfo: [
+        {
+          deskId: clickMapNode.current.id,
+          userType: '0',
+        },
+      ],
+    };
+    bookByCard(opts);
   };
 
   const intervalMapData = () => {

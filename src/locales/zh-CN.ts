@@ -38,4 +38,12 @@ export default {
   DESK_SYQS: '工位空间使用趋势',
   BOOK: '预订',
   REAL: '实时',
+
+  SHUAKA: '请刷卡预订此工位',
+  DEFAULT_BOOK_TIME: '默认时长12小时',
+  SUCCESS: '预订成功',
+  FAILE: '预订失败',
+  BIND_EMAIL: '请绑定邮箱',
+  INPUT_EMAIL: '请输入邮箱',
+  CONFIRM: '确定',
 };
