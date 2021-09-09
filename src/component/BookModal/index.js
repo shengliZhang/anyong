@@ -128,7 +128,7 @@ function Tips({ data }) {
       <div className={styles.tipTit}>{formatText('SHUAKA')}</div>
       <div className={styles.tipName}>{data.name}</div>
       <div className={styles.tipTime}>
-        {dayjs(data.startTime).format('YYYY-MM-DD hh:mm')}
+        {dayjs(data.startTime).format('YYYY-MM-DD HH:mm')}
       </div>
       <div className={styles.tipDef}>{formatText('DEFAULT_BOOK_TIME')}</div>
     </div>

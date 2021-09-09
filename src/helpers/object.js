@@ -124,9 +124,31 @@ function arrToObj(arr) {
   const obj = {};
 
   for (let i = 0; i < arr.length; i++) {
-    const { id, status, qrCode } = arr[i];
-    obj[id] = `${status}_${qrCode}`;
+    const { id, status, name } = arr[i];
+    obj[id] = `${name}_${status}`;
   }
 
   return obj;
+}
+
+export function compileTime() {
+  const cm = moment().minute();
+  let nm = 0;
+  if (cm < 15) {
+    nm = 15;
+  }
+  if (cm >= 15 && cm < 30) {
+    nm = 30;
+  }
+  if (cm >= 30 && cm < 45) {
+    nm = 45;
+  }
+  if (cm > 45) {
+    nm = 60;
+  }
+  const start = moment().minute(nm).second(0);
+  return {
+    start: start.format('YYYY-MM-DD HH:mm:ss'),
+    end: start.add(12, 'hour').format('YYYY-MM-DD HH:mm:ss'),
+  };
 }

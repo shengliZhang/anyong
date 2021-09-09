@@ -7,7 +7,13 @@ import GlobalHeader from '@/component/GlobalHeader';
 import MapAlert from '@/component/MapAlert';
 import BookModal from '@/component/BookModal';
 import ScreenRight from '@/component/ScreenRight';
-import { isObject, isArray, isString, isEqual } from '../helpers/object';
+import {
+  isObject,
+  isArray,
+  isString,
+  isEqual,
+  compileTime,
+} from '../helpers/object';
 import Map from '../component/Map';
 import formatText from '../helpers/format';
 import SearchInput from '../component/SearchInput';
@@ -39,7 +45,7 @@ const floorObj = {
   20: 2,
 };
 
-const mapStatusIcon = [
+const mapRealIcon = [
   {
     color: '#59deab',
     text: 'FLOOR_CAN_USE',
@@ -58,6 +64,17 @@ const mapStatusIcon = [
   },
 ];
 
+const mapBookIcon = [
+  {
+    color: '#59deab',
+    text: 'FLOOR_CAN_USE',
+  },
+  {
+    color: '#ff6c6c',
+    text: 'FLOOR_USEING',
+  },
+];
+
 const HomePage = ({ location }) => {
   const { query } = location;
   const mapData = useRef(null);
@@ -66,6 +83,7 @@ const HomePage = ({ location }) => {
   const language = useRef(null);
   const weatherTimer = useRef(null);
   const buidingId = useRef(null);
+  const [mapStatusIcon, setMapStatusIcon] = useState([...mapRealIcon]);
   const floorChange = useRef(false);
   const [meetingUse, setMeetingUse] = useState({});
   const [deskUse, setDeskUse] = useState({});
@@ -252,11 +270,8 @@ const HomePage = ({ location }) => {
       console.log('tarObj iiss -->>', tarObj);
       clickMapNode.current = {
         ...tarObj,
-        startTime: dayjs().add(5, 'minute').format('YYYY-MM-DD hh:mm:ss'),
-        endTime: dayjs()
-          .add(5, 'minute')
-          .add(12, 'hour')
-          .format('YYYY-MM-DD hh:mm:ss'),
+        startTime: compileTime().start,
+        endTime: compileTime().end,
       };
       setClickData({
         show: true,
@@ -429,27 +444,31 @@ const HomePage = ({ location }) => {
   const handleTabChange = (type) => {
     showMode.current = type;
     if (type === 'book') {
+      setMapStatusIcon(mapBookIcon);
       CardNoRef.current.value = '';
       CardNoRef.current.focus();
+    } else {
+      setMapStatusIcon(mapRealIcon);
     }
   };
 
   const handleCardChange = (e) => {
     const { value } = e.target;
-    setCardValue(value);
-    debounce();
+    setCardValue(`${value}`);
+    debounce(value);
   };
 
-  const debounce = () => {
+  const debounce = (cardNo) => {
     if (!clickMapNode.current) {
       return;
     }
     if (fetchTimer.current) {
       clearTimeout(fetchTimer.current);
+      fetchTimer.current = null;
     }
     fetchTimer.current = setTimeout(() => {
       const opts = {
-        cardNo: cardValue,
+        cardNo: `${cardNo}`,
         reserveBeginTime: clickMapNode.current.startTime,
         reserveEndTime: clickMapNode.current.endTime,
         reserveInfo: [
@@ -460,23 +479,28 @@ const HomePage = ({ location }) => {
         ],
       };
       bookByCard(opts);
-    }, 200);
+    }, 300);
   };
 
   const bookByCard = async (params) => {
     try {
-      const { code } = await bookDesk(params);
+      const { errorCode, code } = await bookDesk(params);
       CardNoRef.current.blur();
-      if (code === 200) {
+      if (errorCode === 200 || code === 200) {
         setClickData((prev) => ({
           show: true,
           data: { ...prev.data, type: 'success' },
         }));
         intervalMapData();
-      } else {
+      } else if (errorCode === 400 || code === 400) {
         setClickData((prev) => ({
           show: true,
           data: { ...prev.data, type: 'book' },
+        }));
+      } else {
+        setClickData((prev) => ({
+          show: true,
+          data: { ...prev.data, type: 'faile' },
         }));
       }
     } catch (error) {
@@ -546,6 +570,8 @@ const HomePage = ({ location }) => {
         inputDom={CardNoRef.current}
       />
       <input
+        type="text"
+        maxLength={200}
         ref={CardNoRef}
         onChange={handleCardChange}
         className={styles.cardNo}

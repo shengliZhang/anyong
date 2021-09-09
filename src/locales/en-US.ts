@@ -10,7 +10,7 @@ export default {
   YI_BAN: 'Moderate',
   BU_HE_GE: 'Poor',
   WEATHER: 'The weather',
-  OUT_DOOR: 'Outdoor air index',
+  OUT_DOOR: 'Indoor environment',
   USE_WECHART: 'Please use corporate WeChat',
   SCAN_BOOK: 'Scan to book',
   ENV_BUIDING_Z: 'Poor',

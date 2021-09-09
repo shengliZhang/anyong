@@ -10,7 +10,7 @@ export default {
   YI_BAN: '良',
   BU_HE_GE: '轻度污染',
   WEATHER: '天气',
-  OUT_DOOR: '室外空气指数',
+  OUT_DOOR: '室内环境',
   USE_WECHART: '请使用企业微信',
   SCAN_BOOK: '扫一扫进行工位预订',
   ENV_BUIDING_Z: '轻度污染',
