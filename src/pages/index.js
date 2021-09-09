@@ -299,7 +299,7 @@ const HomePage = ({ location }) => {
     } catch (error) {}
   };
 
-  // 获取室外天气 && 室内空气
+  // 获取室外天气 && 室内空气 && 会议室使用情况 和 工位使用情况
   const init = async (lang) => {
     try {
       const { code, result } = await getWeather({ lang });
@@ -310,6 +310,8 @@ const HomePage = ({ location }) => {
           innerAir: airData.result,
         });
       }
+      getMeetingUseData();
+      fetchDeskUseData();
     } catch (error) {}
   };
 
