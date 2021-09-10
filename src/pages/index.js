@@ -35,9 +35,10 @@ import {
 
 // 默认地图配色
 const DefaultColors = {
-  0: '#59deab', // 绿色
-  1: '#ff6c6c', // 红色
-  2: '#59deab', // 绿色
+  1: '#59deab', // 绿色
+  2: '#ffdc68', // 黄色
+  3: '#ff6c6c', // 红色
+  4: '#9a91ff',
 };
 const floorArr = ['18', '20'];
 const floorObj = {
@@ -266,7 +267,7 @@ const HomePage = ({ location }) => {
         if (isString(item.fids) && item.fids === FID) return true;
         return false;
       }) || {};
-    if (Object.values(tarObj).length > 0 && tarObj.status == 2) {
+    if (Object.values(tarObj).length > 0 && tarObj.status == 1) {
       console.log('tarObj iiss -->>', tarObj);
       clickMapNode.current = {
         ...tarObj,
