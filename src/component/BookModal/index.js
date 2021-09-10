@@ -78,7 +78,6 @@ function BookModal(props) {
     startTimer();
   };
 
-  console.log('comType is', comType, props);
   return (
     <Modal
       closable={false}
@@ -121,7 +120,6 @@ function BookModal(props) {
 export default BookModal;
 
 function Tips({ data }) {
-  console.log('Tips data is', data);
   if (!data) return null;
   return (
     <div className={styles.tipsToBook}>

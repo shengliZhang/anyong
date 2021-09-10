@@ -48,7 +48,6 @@ function SearchInput({ debounceTimeout = 100, onSelect, buildingId }) {
   }, [showWarper]);
 
   const handleSelectItem = (item) => {
-    console.log('handleSelectItem', item);
     autoClose();
     setInputValue(item.userName);
     setShowWarper(false);

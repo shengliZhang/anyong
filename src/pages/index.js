@@ -33,13 +33,22 @@ import {
   getFloorId,
 } from '../config/api';
 
-// 默认地图配色
-const DefaultColors = {
+// 实时地图配色
+const RealColors = {
   1: '#59deab', // 绿色
   2: '#ffdc68', // 黄色
   3: '#ff6c6c', // 红色
-  4: '#9a91ff',
+  4: '#9a91ff', // 紫色
 };
+
+// 预订地图配色
+const BookColors = {
+  1: '#59deab', // 绿色
+  2: '#ff6c6c',
+  3: '#ff6c6c', // 红色
+  4: '#59deab',
+};
+
 const floorArr = ['18', '20'];
 const floorObj = {
   18: 1,
@@ -129,6 +138,8 @@ const HomePage = ({ location }) => {
     const serverData = [...data];
     const request = { types: ['model'] };
     const groupId = MAP.current.focusGroupID;
+    const colorObj = showMode.current === 'book' ? BookColors : RealColors;
+
     fengmapSDK.MapUtil.search(MAP.current, groupId, request, (result) => {
       if (result.length <= 0) return;
       for (let model of result) {
@@ -138,13 +149,13 @@ const HomePage = ({ location }) => {
           for (let key of serverData) {
             if (Array.isArray(key?.fids) && key.fids.includes(FID)) {
               model?.target?.setColor &&
-                model.target.setColor(DefaultColors[key.status], 1);
-              model?.setColor && model.setColor(DefaultColors[key.status], 1);
+                model.target.setColor(colorObj[key.status], 1);
+              model?.setColor && model.setColor(colorObj[key.status], 1);
             }
-            if (key?.fids && key.fids === FID) {
+            if (key?.fids && key.fids === FID && colorObj[key.status]) {
               model?.target?.setColor &&
-                model.target.setColor(DefaultColors[key.status], 1);
-              model?.setColor && model.setColor(DefaultColors[key.status], 1);
+                model.target.setColor(colorObj[key.status], 1);
+              model?.setColor && model.setColor(colorObj[key.status], 1);
             }
           }
         }
@@ -166,7 +177,7 @@ const HomePage = ({ location }) => {
       if (success) {
         if (isArray(result)) {
           if (!isEqual(mapData.current, result) || floorChange.current) {
-            console.log('not same');
+            console.log('data is not same');
             const datas = result.filter((item) => {
               if (Array.isArray(item.fids)) {
                 return !!item.fids[0];
@@ -267,8 +278,10 @@ const HomePage = ({ location }) => {
         if (isString(item.fids) && item.fids === FID) return true;
         return false;
       }) || {};
-    if (Object.values(tarObj).length > 0 && tarObj.status == 1) {
-      console.log('tarObj iiss -->>', tarObj);
+    if (
+      Object.values(tarObj).length > 0 &&
+      (tarObj.status == 1 || tarObj.status == 4)
+    ) {
       clickMapNode.current = {
         ...tarObj,
         startTime: compileTime().start,
@@ -332,7 +345,6 @@ const HomePage = ({ location }) => {
   };
 
   const fetchDeskUseData = async () => {
-    console.log('floorObject.current 工位 is', floorObject.current);
     try {
       const { code, result } = await getDeskUse({
         deskBuildingId: '',
@@ -360,7 +372,6 @@ const HomePage = ({ location }) => {
   const fetchFloorId = () => {
     return getFloorId().then(({ code, model }) => {
       if (code === 200) {
-        console.log('fetchFloorId is', model);
         const florObj = {};
         if (isArray(model)) {
           model.forEach((item) => {
@@ -444,6 +455,10 @@ const HomePage = ({ location }) => {
 
   const handleTabChange = (type) => {
     showMode.current = type;
+    if (Array.isArray(mapData.current)) {
+      setMapColor(mapData.current);
+    }
+
     if (type === 'book') {
       setMapStatusIcon(mapBookIcon);
       CardNoRef.current.value = '';

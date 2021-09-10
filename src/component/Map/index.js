@@ -77,7 +77,6 @@ function Map(props) {
   }, [mapScaleLevelRange, defaultMapScale, mapHeight, mapWidth]);
 
   const mapLoad = (e, map) => {
-    console.log('load map', map);
     mapInstance.current = map;
     if (!navigation.current) {
       _createNavigation(map);
