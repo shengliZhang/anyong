@@ -81,7 +81,8 @@ function Map(props) {
     if (!navigation.current) {
       _createNavigation(map);
     }
-
+    //const compass = new fengmapSDK.FMCompass();
+    //compass.addTo(map);
     map.setBackgroundColor('#fff', 0);
     const { listFloors, focusFloor } = map;
     setFloor({ listFloors, focusFloor });
@@ -226,6 +227,10 @@ function Map(props) {
     refresh && refresh();
     _setRoute(startPoniter.current, null, true);
     mapInstance.current.rotateTo({ to: 0, duration: 1 });
+    mapInstance.current.scaleTo({
+      scale: defaultMapScale,
+      duration: 0.2,
+    });
     mapInstance.current.viewMode = fengmapSDK.FMViewMode.MODE_2D;
     if (isObject(query)) {
       if (query.f && floorArr.includes(query.f)) {
@@ -285,7 +290,7 @@ function Map(props) {
   }, [positionFid]);
 
   return (
-    <div className={styles.mapWaper}>
+    <div onTouchEnd={resetMap} className={styles.mapWaper}>
       <FengmapBase
         fengmapSDK={fengmapSDK}
         mapId={mapId}
@@ -302,10 +307,10 @@ function Map(props) {
         loadingTxt="Loading..."
         gestureEnableController={{
           enableMapRotate: false, //旋转
-          enableMapPinch: false, // 缩放
+          enableMapPinch: true, // 缩放
           enableMapIncline: true, // 倾斜
           enableMapPan: false, // 移动
-          enableMapSingleTap: true, //不可单击
+          enableMapSingleTap: true, //可单击
         }}
         style={{
           width: `${width}px`,
