@@ -13,6 +13,7 @@ import {
   isString,
   isEqual,
   compileTime,
+  boosRoom,
 } from '../helpers/object';
 import Map from '../component/Map';
 import formatText from '../helpers/format';
@@ -85,6 +86,8 @@ const mapBookIcon = [
   },
 ];
 
+const BoosRoomFid = boosRoom();
+
 const HomePage = ({ location }) => {
   const { query } = location;
   const mapData = useRef(null);
@@ -105,15 +108,17 @@ const HomePage = ({ location }) => {
   });
   const CardNoRef = useRef(null);
   const fetchTimer = useRef(null);
-  const showMode = useRef(null);
+  const showMode = useRef('real');
   const clickMapNode = useRef(null);
   const floorObject = useRef({});
   const [focusFloor, setFocusFloor] = useState(18);
   const [cardValue, setCardValue] = useState('');
+  const [acriveTab, setAcriveTab] = useState('real');
 
   const _onMapLoaded = (e, map) => {
     MAP.current = map; // 保存地图
     //map.rotateTo({ to: 20, duration: 1 });
+    //console.log('compass is', map);
     map.rotateTo({ to: 0, duration: 1 });
     map.labelLanguage = language.current;
     intervalMapData();
@@ -140,6 +145,8 @@ const HomePage = ({ location }) => {
     const groupId = MAP.current.focusGroupID;
     const colorObj = showMode.current === 'book' ? BookColors : RealColors;
 
+    const boosRoomByFool = BoosRoomFid[focusFloor];
+    console.log('showMode.current is', showMode.current);
     fengmapSDK.MapUtil.search(MAP.current, groupId, request, (result) => {
       if (result.length <= 0) return;
       for (let model of result) {
@@ -148,9 +155,23 @@ const HomePage = ({ location }) => {
           const { FID } = target;
           for (let key of serverData) {
             if (Array.isArray(key?.fids) && key.fids.includes(FID)) {
-              model?.target?.setColor &&
-                model.target.setColor(colorObj[key.status], 1);
-              model?.setColor && model.setColor(colorObj[key.status], 1);
+              if (showMode.current === 'book') {
+                model?.target?.setColor &&
+                  model.target.setColor(colorObj[key.status], 1);
+                model?.setColor && model.setColor(colorObj[key.status], 1);
+                for (let j = 0; j < boosRoomByFool.length; j++) {
+                  const [id] = boosRoomByFool[j];
+                  if (key.fids.includes(id)) {
+                    model?.target?.setColor &&
+                      model.target.setColor('#5d677f', 0.2); // #59deab
+                    model?.setColor && model.setColor('#5d677f', 0.2);
+                  }
+                }
+              } else {
+                model?.target?.setColor &&
+                  model.target.setColor(colorObj[key.status], 1);
+                model?.setColor && model.setColor(colorObj[key.status], 1);
+              }
             }
             if (key?.fids && key.fids === FID && colorObj[key.status]) {
               model?.target?.setColor &&
@@ -176,15 +197,14 @@ const HomePage = ({ location }) => {
       });
       if (success) {
         if (isArray(result)) {
-          if (!isEqual(mapData.current, result) || floorChange.current) {
+          const datas = result.filter((item) => {
+            if (Array.isArray(item.fids)) {
+              return !!item.fids[0];
+            }
+            return !!item.fids;
+          });
+          if (!isEqual(mapData.current, datas) || floorChange.current) {
             console.log('data is not same');
-            const datas = result.filter((item) => {
-              if (Array.isArray(item.fids)) {
-                return !!item.fids[0];
-              }
-              return !!item.fids;
-            });
-
             mapData.current = datas;
             setMapColor(datas);
           } else {
@@ -299,10 +319,13 @@ const HomePage = ({ location }) => {
   };
   const handleFloorChange = (floor) => {
     floorChange.current = true;
+    showMode.current = 'real';
     setFocusFloor(floor);
     intervalMapData();
     getMeetingUseData();
     fetchDeskUseData();
+    setAcriveTab('real');
+    setMapStatusIcon(mapRealIcon);
   };
 
   const fetchBuidingId = async () => {
@@ -455,6 +478,7 @@ const HomePage = ({ location }) => {
 
   const handleTabChange = (type) => {
     showMode.current = type;
+    setAcriveTab(type);
     if (Array.isArray(mapData.current)) {
       setMapColor(mapData.current);
     }
@@ -552,7 +576,7 @@ const HomePage = ({ location }) => {
             </div>
           </div>
 
-          <SwitchTabs onChange={handleTabChange} />
+          <SwitchTabs onChange={handleTabChange} active={acriveTab} />
 
           <div className={styles.mapCenter}>
             <Map

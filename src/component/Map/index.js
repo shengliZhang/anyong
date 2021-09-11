@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import fengmapSDK from 'fengmap';
-import { FengmapBase, Fengmap3DControl } from 'react-fengmap';
+import {
+  FengmapBase,
+  Fengmap3DControl,
+  FengmapCompassControl,
+} from 'react-fengmap';
 import PropTypes from 'prop-types';
 import styles from './style.less';
 import {
@@ -17,6 +21,7 @@ const { UMI_PUBLIC_PATH } = require('../../config/umiconfig');
 
 const startPointUrl = `/${UMI_PUBLIC_PATH}/assets/startPoint.png`;
 const endPointUrl = `/${UMI_PUBLIC_PATH}/assets/endPoint.png`;
+const zhinanzhen = `/${UMI_PUBLIC_PATH}/assets/zhinanzhen.png`;
 
 const mapServerURL = `/${UMI_PUBLIC_PATH}/maps`; // ''https://3dl.dfocus.top/api/static/maps'
 const mapThemeURL = `/${UMI_PUBLIC_PATH}/maps/themes`; // ''https://3dl.dfocus.top/api/static/themes'
@@ -289,6 +294,10 @@ function Map(props) {
     }
   }, [positionFid]);
 
+  const OnClick = (e, w, q) => {
+    console.log(e, w, q);
+  };
+
   return (
     <div onTouchEnd={resetMap} className={styles.mapWaper}>
       <FengmapBase
@@ -322,6 +331,11 @@ function Map(props) {
           mapClickNode: onMapModalClick,
         }}
       >
+        {/*<FengmapCompassControl
+          visible={true}
+          image={{ bg: zhinanzhen }}
+          onClick={OnClick}
+        />*/}
         <Fengmap3DControl
           ctrlOptions={{
             position: fengmapSDK.controlPositon.RIGHT_BOTTOM,

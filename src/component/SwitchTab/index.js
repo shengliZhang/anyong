@@ -1,23 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './index.less';
 import { ReactComponent as TimeUp } from '@/assets/timeup.svg';
 import { ReactComponent as Book } from '@/assets/book.svg';
 import formatText from '../../helpers/format';
 
-function SwitchTabs({ onChange }) {
-  const [avtive, setAvtive] = useState('real');
+function SwitchTabs({ onChange, active }) {
+  //const [avtive, setAvtive] = useState('real');
   const handleItemClick = (type) => {
     return () => {
-      setAvtive(type);
+      //setAvtive(type);
       onChange && onChange(type);
     };
   };
+
+  //useEffect(() => {
+  //  setAvtive(acriveTab);
+  //}, [acriveTab]);
+
+  console.log('SwitchTabs is', active, '--acriveTab--');
   return (
     <div className={styles.container}>
       <div
         onClick={handleItemClick('real')}
         className={`${styles.item} ${
-          avtive === 'real' ? styles.activeleft : ''
+          active === 'real' ? styles.activeleft : ''
         }`}
       >
         <div>
@@ -28,7 +34,7 @@ function SwitchTabs({ onChange }) {
       <div
         onClick={handleItemClick('book')}
         className={`${styles.item} ${
-          avtive === 'book' ? styles.activeRight : ''
+          active === 'book' ? styles.activeRight : ''
         }`}
       >
         <div>
