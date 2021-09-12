@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { getLocale } from 'umi';
+import { getLocale, useIntl } from 'umi';
 import fengmapSDK from 'fengmap';
 import dayjs from 'dayjs';
 import { message } from 'antd';
@@ -114,6 +114,7 @@ const HomePage = ({ location }) => {
   const [focusFloor, setFocusFloor] = useState(18);
   const [cardValue, setCardValue] = useState('');
   const [acriveTab, setAcriveTab] = useState('real');
+  const formatTextMsg = useIntl().messages;
 
   const _onMapLoaded = (e, map) => {
     MAP.current = map; // 保存地图
@@ -172,6 +173,9 @@ const HomePage = ({ location }) => {
                   model.target.setColor(colorObj[key.status], 1);
                 model?.setColor && model.setColor(colorObj[key.status], 1);
               }
+              //if (key.fids.includes('4335581801104')) {
+              //  console.log('老板 --》〉', key);
+              //}
             }
             if (key?.fids && key.fids === FID && colorObj[key.status]) {
               model?.target?.setColor &&
@@ -442,6 +446,7 @@ const HomePage = ({ location }) => {
   const handleClosedAlart = () => {
     setClickData({ show: false, data: { type: 'text' } });
   };
+
   const handleSelectUser = (user) => {
     const { fids, floorName } = user;
     if (isString(floorName)) {
@@ -450,7 +455,7 @@ const HomePage = ({ location }) => {
         if (floorObj[floor] !== MAP.current.focusGroupID) {
           message.warning(
             <div className={styles.searchWaring}>
-              您所搜素的员工不在本楼层，请前往{floor}F楼层大屏搜索
+              {`${formatTextMsg.SEARCH_TIPS}${floor}${formatTextMsg.END}`}
             </div>,
             3
           );

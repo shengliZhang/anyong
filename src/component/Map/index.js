@@ -195,6 +195,7 @@ function Map(props) {
     if (!target || !target?.FID) {
       return;
     }
+    console.log('target.FID', target.FID);
     const groupID = floorObj[focusFloor];
     const endPt = {
       options: {
@@ -235,6 +236,9 @@ function Map(props) {
     mapInstance.current.scaleTo({
       scale: defaultMapScale,
       duration: 0.2,
+      callback: () => {
+        mapInstance.current.moveToCenter();
+      },
     });
     mapInstance.current.viewMode = fengmapSDK.FMViewMode.MODE_2D;
     if (isObject(query)) {
@@ -318,7 +322,7 @@ function Map(props) {
           enableMapRotate: false, //旋转
           enableMapPinch: true, // 缩放
           enableMapIncline: true, // 倾斜
-          enableMapPan: false, // 移动
+          enableMapPan: true, // 移动
           enableMapSingleTap: true, //可单击
         }}
         style={{

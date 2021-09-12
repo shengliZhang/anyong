@@ -45,4 +45,8 @@ export default {
   BIND_EMAIL: 'Please bind email',
   INPUT_EMAIL: 'Please input your email',
   CONFIRM: 'Ok',
+
+  SEARCH_TIPS:
+    'The employee you searched for is not on this floor, please go to the big screen on the',
+  END: 'F floor to search',
 };

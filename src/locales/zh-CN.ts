@@ -46,4 +46,6 @@ export default {
   BIND_EMAIL: '请绑定邮箱',
   INPUT_EMAIL: '请输入邮箱',
   CONFIRM: '确定',
+  SEARCH_TIPS: '您所搜素的员工不在本楼层，请前往',
+  END: 'F楼层大屏搜索',
 };
