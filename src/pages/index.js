@@ -110,6 +110,7 @@ const HomePage = ({ location }) => {
   const fetchTimer = useRef(null);
   const showMode = useRef('real');
   const clickMapNode = useRef(null);
+  const creentFloor = useRef(18);
   const floorObject = useRef({});
   const [focusFloor, setFocusFloor] = useState(18);
   const [cardValue, setCardValue] = useState('');
@@ -126,12 +127,14 @@ const HomePage = ({ location }) => {
     let groupID = 1;
     if (isObject(query)) {
       if (floorArr.includes(query.f)) {
+        creentFloor.current = query.f;
         setFocusFloor(query.f);
         groupID = floorObj[query.f];
         map.focusGroupID = groupID;
       }
     } else {
       setFocusFloor(18);
+      creentFloor.current = 18;
     }
   };
 
@@ -146,7 +149,7 @@ const HomePage = ({ location }) => {
     const groupId = MAP.current.focusGroupID;
     const colorObj = showMode.current === 'book' ? BookColors : RealColors;
 
-    const boosRoomByFool = BoosRoomFid[focusFloor];
+    const boosRoomByFool = BoosRoomFid[creentFloor.current];
     console.log('showMode.current is', showMode.current);
     fengmapSDK.MapUtil.search(MAP.current, groupId, request, (result) => {
       if (result.length <= 0) return;
@@ -191,13 +194,14 @@ const HomePage = ({ location }) => {
   /**
    * 获取工位数据
    */
-  const getDeskScreenDisplay = async () => {
+  const getDeskScreenDisplay = async (mode) => {
     try {
       const { success, result } = await getMapData({
         deskFloorId: '', //focusFloor,
         meetingBuildingId: '',
         meetingFloorId: '', //focusFloor,
         deskBuildingId: '',
+        modelType: showMode.current === 'real' ? 1 : 2,
       });
       if (success) {
         if (isArray(result)) {
@@ -207,7 +211,7 @@ const HomePage = ({ location }) => {
             }
             return !!item.fids;
           });
-          if (!isEqual(mapData.current, datas) || floorChange.current) {
+          if (!isEqual(mapData.current, datas) || floorChange.current || mode) {
             console.log('data is not same');
             mapData.current = datas;
             setMapColor(datas);
@@ -225,11 +229,11 @@ const HomePage = ({ location }) => {
     try {
       const { code, model } = await getMeetingUse({
         buildingId: '',
-        floorId: floorObject.current[focusFloor] || '',
+        floorId: floorObject.current[creentFloor.current] || '',
       });
       const mchart = await getMeetingChart({
         buildingId: '',
-        floorId: floorObject.current[focusFloor] || '',
+        floorId: floorObject.current[creentFloor.current] || '',
       });
       let use = {};
       if (code === 200 && isObject(model)) {
@@ -289,7 +293,6 @@ const HomePage = ({ location }) => {
    */
   const handleMapClickNode = (event, mapInstance) => {
     if (showMode.current !== 'book') return;
-    //const { focusFloor } = mapInstance;
     const { mapCoord, target } = event;
     const { FID } = target;
     if (!FID) {
@@ -325,6 +328,7 @@ const HomePage = ({ location }) => {
     floorChange.current = true;
     showMode.current = 'real';
     setFocusFloor(floor);
+    creentFloor.current = floor;
     intervalMapData();
     getMeetingUseData();
     fetchDeskUseData();
@@ -375,11 +379,11 @@ const HomePage = ({ location }) => {
     try {
       const { code, result } = await getDeskUse({
         deskBuildingId: '',
-        deskFloorId: floorObject.current[focusFloor] || '',
+        deskFloorId: floorObject.current[creentFloor.current] || '',
       });
       const desk = await getDeskChart({
         buildingId: '',
-        floorId: floorObject.current[focusFloor] || '',
+        floorId: floorObject.current[creentFloor.current] || '',
       });
       let use = {};
       if (code === 200 && isObject(result)) {
@@ -478,15 +482,14 @@ const HomePage = ({ location }) => {
   };
 
   const handleFrash = () => {
+    floorChange.current = false;
     intervalMapData();
   };
 
   const handleTabChange = (type) => {
     showMode.current = type;
     setAcriveTab(type);
-    if (Array.isArray(mapData.current)) {
-      setMapColor(mapData.current);
-    }
+    getDeskScreenDisplay(true);
 
     if (type === 'book') {
       setMapStatusIcon(mapBookIcon);
