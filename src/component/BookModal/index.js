@@ -181,7 +181,7 @@ function Book({ id, clearTimer, onSuccess, onFaile }) {
           cardNo: card,
           email,
         });
-        if (bindRes?.code === 200) {
+        if (bindRes?.code === 200 || bindRes.errorCode === 200) {
           onSuccess && onSuccess();
         } else {
           //message.error(bindRes.message);

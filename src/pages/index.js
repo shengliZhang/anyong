@@ -164,7 +164,7 @@ const HomePage = ({ location }) => {
                   model.target.setColor(colorObj[key.status], 1);
                 model?.setColor && model.setColor(colorObj[key.status], 1);
                 for (let j = 0; j < boosRoomByFool.length; j++) {
-                  const [id] = boosRoomByFool[j];
+                  const id = boosRoomByFool[j];
                   if (key.fids.includes(id)) {
                     model?.target?.setColor &&
                       model.target.setColor('#5d677f', 0.2); // #59deab
@@ -176,9 +176,6 @@ const HomePage = ({ location }) => {
                   model.target.setColor(colorObj[key.status], 1);
                 model?.setColor && model.setColor(colorObj[key.status], 1);
               }
-              //if (key.fids.includes('4335581801104')) {
-              //  console.log('老板 --》〉', key);
-              //}
             }
             if (key?.fids && key.fids === FID && colorObj[key.status]) {
               model?.target?.setColor &&
@@ -296,6 +293,10 @@ const HomePage = ({ location }) => {
     const { mapCoord, target } = event;
     const { FID } = target;
     if (!FID) {
+      return;
+    }
+    const boosRoomByFool = BoosRoomFid[creentFloor.current];
+    if (showMode.current === 'book' && boosRoomByFool.includes(FID)) {
       return;
     }
     const arr = mapData.current;
