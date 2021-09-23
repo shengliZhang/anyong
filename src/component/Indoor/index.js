@@ -4,7 +4,7 @@ import styles from './index.less';
 import { isObject } from '../../helpers/object';
 import formatText from '../../helpers/format';
 
-function Indoor({ data, type = 'F19' }) {
+function Indoor({ data, type = 'F18' }) {
   if (!data) return null;
   const air = isObject(data) ? data[type] : {};
   return (

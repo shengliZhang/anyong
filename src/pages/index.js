@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { getLocale, useIntl } from 'umi';
 import fengmapSDK from 'fengmap';
-import dayjs from 'dayjs';
 import { message } from 'antd';
 import GlobalHeader from '@/component/GlobalHeader';
-import MapAlert from '@/component/MapAlert';
 import BookModal from '@/component/BookModal';
 import ScreenRight from '@/component/ScreenRight';
 import {
@@ -32,6 +30,7 @@ import {
   getDeskChart,
   bookDesk,
   getFloorId,
+  getDeskFloorId,
 } from '../config/api';
 
 // 实时地图配色
@@ -111,7 +110,8 @@ const HomePage = ({ location }) => {
   const showMode = useRef('real');
   const clickMapNode = useRef(null);
   const creentFloor = useRef(18);
-  const floorObject = useRef({});
+  const floorObject = useRef(null);
+  const DeskfloorObject = useRef(null);
   const [focusFloor, setFocusFloor] = useState(18);
   const [cardValue, setCardValue] = useState('');
   const [acriveTab, setAcriveTab] = useState('real');
@@ -150,7 +150,6 @@ const HomePage = ({ location }) => {
     const colorObj = showMode.current === 'book' ? BookColors : RealColors;
 
     const boosRoomByFool = BoosRoomFid[creentFloor.current];
-    console.log('showMode.current is', showMode.current);
     fengmapSDK.MapUtil.search(MAP.current, groupId, request, (result) => {
       if (result.length <= 0) return;
       for (let model of result) {
@@ -223,6 +222,7 @@ const HomePage = ({ location }) => {
   };
 
   const getMeetingUseData = async () => {
+    if (!floorObject.current) return;
     try {
       const { code, model } = await getMeetingUse({
         buildingId: '',
@@ -335,12 +335,13 @@ const HomePage = ({ location }) => {
     fetchDeskUseData();
     setAcriveTab('real');
     setMapStatusIcon(mapRealIcon);
+    setWeatherData((prev) => ({ ...prev, floor: `F${creentFloor.current}` }));
   };
 
   const fetchBuidingId = async () => {
     try {
-      const { success, data } = await getBuildingId();
-      if (success) {
+      const { errorCode, data } = await getBuildingId();
+      if (errorCode === 200) {
         if (isArray(data) && data.length > 0) {
           const obj =
             data.find(
@@ -351,11 +352,12 @@ const HomePage = ({ location }) => {
             ) || {};
 
           buidingId.current = obj.id;
-          return;
         }
         if (isObject(data)) {
           buidingId.current = data.id;
         }
+
+        fetchDeskFloorId();
       }
     } catch (error) {}
   };
@@ -369,6 +371,7 @@ const HomePage = ({ location }) => {
         setWeatherData({
           outWeather: result,
           innerAir: airData.result,
+          floor: `F${creentFloor.current}`,
         });
       }
       getMeetingUseData();
@@ -377,14 +380,15 @@ const HomePage = ({ location }) => {
   };
 
   const fetchDeskUseData = async () => {
+    if (!DeskfloorObject.current) return;
     try {
       const { code, result } = await getDeskUse({
         deskBuildingId: '',
-        deskFloorId: floorObject.current[creentFloor.current] || '',
+        deskFloorId: DeskfloorObject.current[creentFloor.current] || '',
       });
       const desk = await getDeskChart({
         buildingId: '',
-        floorId: floorObject.current[creentFloor.current] || '',
+        floorId: DeskfloorObject.current[creentFloor.current] || '',
       });
       let use = {};
       if (code === 200 && isObject(result)) {
@@ -415,13 +419,28 @@ const HomePage = ({ location }) => {
       }
     });
   };
+  const fetchDeskFloorId = async () => {
+    const { errorCode, data } = await getDeskFloorId({
+      buildingId: buidingId.current,
+    });
+    if (errorCode === 200) {
+      const florObj = {};
+      if (isArray(data)) {
+        data.forEach((item) => {
+          const { floorNum, id } = item;
+          florObj[floorNum] = id;
+        });
+        DeskfloorObject.current = florObj;
+        fetchDeskUseData();
+      }
+    }
+  };
 
   useEffect(() => {
     language.current = getLocale() === 'en-US' ? 'en' : 'zh';
     fetchBuidingId();
     fetchFloorId().then(() => {
       getMeetingUseData();
-      fetchDeskUseData();
     });
 
     if (weatherTimer.current) {

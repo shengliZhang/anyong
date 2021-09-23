@@ -47,6 +47,14 @@ export function getFloorId(params) {
   });
 }
 
+// GET /bookinganyong/facade/floor
+export function getDeskFloorId(params) {
+  return request(`${DESK_API_HOST}/facade/floor`, {
+    method: 'get',
+    params,
+  });
+}
+
 export function getMeetingChart(params) {
   return request(`${MEETING_API_HOST}/anyong/screen/space/use`, {
     method: 'get',

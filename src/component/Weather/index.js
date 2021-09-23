@@ -11,7 +11,7 @@ function Weather({ weatherData }) {
       <TitleWithIcon name={formatText('WEATHER')} />
       <OuterDoor data={weatherData?.outWeather} />
       <TitleWithIcon name={formatText('OUT_DOOR')} />
-      <Indoor data={weatherData?.innerAir} />
+      <Indoor data={weatherData?.innerAir} type={weatherData.floor} />
     </>
   );
 }
