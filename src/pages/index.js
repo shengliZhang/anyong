@@ -159,9 +159,15 @@ const HomePage = ({ location }) => {
           for (let key of serverData) {
             if (Array.isArray(key?.fids) && key.fids.includes(FID)) {
               if (showMode.current === 'book') {
-                model?.target?.setColor &&
-                  model.target.setColor(colorObj[key.status], 1);
-                model?.setColor && model.setColor(colorObj[key.status], 1);
+                if (key.status == 0) {
+                  model?.target?.setColor &&
+                    model.target.setColor('#e5e5e5', 0.1);
+                  model?.setColor && model.setColor('#e5e5e5', 0.1);
+                } else {
+                  model?.target?.setColor &&
+                    model.target.setColor(colorObj[key.status], 1);
+                  model?.setColor && model.setColor(colorObj[key.status], 1);
+                }
                 for (let j = 0; j < boosRoomByFool.length; j++) {
                   const id = boosRoomByFool[j];
                   if (key.fids.includes(id)) {
@@ -171,15 +177,27 @@ const HomePage = ({ location }) => {
                   }
                 }
               } else {
+                if (key.status == 0) {
+                  model?.target?.setColor &&
+                    model.target.setColor('#e5e5e5', 0.1);
+                  model?.setColor && model.setColor('#e5e5e5', 0.1);
+                } else {
+                  model?.target?.setColor &&
+                    model.target.setColor(colorObj[key.status], 1);
+                  model?.setColor && model.setColor(colorObj[key.status], 1);
+                }
+              }
+            }
+            if (key?.fids && key.fids === FID && colorObj[key.status]) {
+              if (key.status == 0) {
+                model?.target?.setColor &&
+                  model.target.setColor('#e5e5e5', 0.1);
+                model?.setColor && model.setColor('#e5e5e5', 0.1);
+              } else {
                 model?.target?.setColor &&
                   model.target.setColor(colorObj[key.status], 1);
                 model?.setColor && model.setColor(colorObj[key.status], 1);
               }
-            }
-            if (key?.fids && key.fids === FID && colorObj[key.status]) {
-              model?.target?.setColor &&
-                model.target.setColor(colorObj[key.status], 1);
-              model?.setColor && model.setColor(colorObj[key.status], 1);
             }
           }
         }
