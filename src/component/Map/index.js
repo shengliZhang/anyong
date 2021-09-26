@@ -13,6 +13,7 @@ import {
   appName,
   DEBUGER_TIP,
   themeId,
+  mapServerURL,
 } from '../../config/index';
 import { isObject, isString } from '../../helpers/object';
 import { message } from 'antd';
@@ -23,8 +24,8 @@ const startPointUrl = `/${UMI_PUBLIC_PATH}/assets/startPoint.png`;
 const endPointUrl = `/${UMI_PUBLIC_PATH}/assets/endPoint.png`;
 const zhinanzhen = `/${UMI_PUBLIC_PATH}/assets/zhinanzhen.png`;
 
-const mapServerURL = `/${UMI_PUBLIC_PATH}/maps`; // ''https://3dl.dfocus.top/api/static/maps'
-const mapThemeURL = `/${UMI_PUBLIC_PATH}/maps/themes`; // ''https://3dl.dfocus.top/api/static/themes'
+const mapURL = `${mapServerURL}/maps`; // ''https://3dl.dfocus.top/api/static/maps'
+const themeURL = `${mapServerURL}/themes`; // ''https://3dl.dfocus.top/api/static/themes'
 
 const floorObj = {
   18: 1,
@@ -161,7 +162,7 @@ function Map(props) {
               key={k}
               onClick={() => handleToChangeFlor(k)}
             >
-              {k}
+              {k}F
             </p>
           );
         })}
@@ -312,8 +313,8 @@ function Map(props) {
           key: appKey,
           appName: appName,
           defaultThemeName: themeId,
-          mapServerURL,
-          mapThemeURL,
+          mapServerURL: mapURL,
+          mapThemeURL: themeURL,
           defaultMapScale: defaultScale,
           mapScaleLevelRange: ScaleLevelRange,
         }}
@@ -355,7 +356,7 @@ function Map(props) {
         <div className={styles.floorWarper}>
           {compileFloor(floor.listFloors, floor.focusFloor)}
           <div onClick={handleFloorClick} className={styles.cur}>
-            {floor.focusFloor}
+            {floor.focusFloor}F
           </div>
         </div>
       )}

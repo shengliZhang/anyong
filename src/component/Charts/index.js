@@ -120,16 +120,18 @@ function Opts(type = 'meeting', data = []) {
   let time = [];
   if (Array.isArray(data)) {
     barData = data.map((item) => {
-      if (type === 'meeting') {
-        return Number(item.currentDayAveRate) * 100;
-      }
-      return item.currentDayAveRate;
+      //if (type === 'meeting') {
+      //  return Number(item.currentDayAveRate) * 100;
+      //}
+      //return item.currentDayAveRate;
+      return Number(item.currentDayAveRate) * 100;
     });
     lineData = data.map((item) => {
-      if (type === 'meeting') {
-        return Number(item.currentDayMaxRate) * 100;
-      }
-      return item.currentDayMaxRate;
+      //if (type === 'meeting') {
+      //  return Number(item.currentDayMaxRate) * 100;
+      //}
+      //return item.currentDayMaxRate;
+      return Number(item.currentDayMaxRate) * 100;
     });
     time = data.map((item) => dayjs(item.time).format('MM.DD'));
   }
@@ -188,10 +190,11 @@ function Opts(type = 'meeting', data = []) {
           fontSize: 24,
           color: '#b5c0ca',
           formatter(val) {
-            if (type === 'meeting') {
-              return `${val}%`;
-            }
-            return `${val}`;
+            //if (type === 'meeting') {
+            //  return `${val}%`;
+            //}
+            //return `${val}`;
+            return `${val}%`;
           },
         },
         splitLine: {
