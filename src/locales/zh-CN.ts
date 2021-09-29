@@ -48,4 +48,6 @@ export default {
   CONFIRM: '确定',
   SEARCH_TIPS: '您所搜素的员工不在本楼层，请前往',
   END: 'F楼层大屏搜索',
+  NOT_EXITS: '对不起，您无权限预定该工位，请联系管理员',
+  BIND_ERR: '对不起，您的账号不存在，请联系管理员',
 };

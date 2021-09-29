@@ -49,4 +49,6 @@ export default {
   SEARCH_TIPS:
     'The employee you searched for is not on this floor, please go to the big screen on the',
   END: 'F floor to search',
+  NOT_EXITS: 'Booking without privilege, please contact the administrator',
+  BIND_ERR: 'Account does not exist, please contact the administrator',
 };

@@ -9,6 +9,7 @@ function SwitchTabs({ onChange, active }) {
   const handleItemClick = (type) => {
     return () => {
       //setAvtive(type);
+      if (type === active) return;
       onChange && onChange(type);
     };
   };

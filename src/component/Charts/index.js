@@ -120,17 +120,16 @@ function Opts(type = 'meeting', data = []) {
   let time = [];
   if (Array.isArray(data)) {
     barData = data.map((item) => {
-      //if (type === 'meeting') {
-      //  return Number(item.currentDayAveRate) * 100;
-      //}
-      //return item.currentDayAveRate;
       return Number(item.currentDayAveRate) * 100;
+      //const currentDayAveRate = Number(item.currentDayAveRate);
+      //const nums = currentDayAveRate >= 1 ? 1 : currentDayAveRate;
+      //return nums * 100;
     });
     lineData = data.map((item) => {
-      //if (type === 'meeting') {
-      //  return Number(item.currentDayMaxRate) * 100;
-      //}
-      //return item.currentDayMaxRate;
+      //const currentDayMaxRate = Number(item.currentDayMaxRate);
+      //const nums = currentDayMaxRate >= 1 ? 1 : currentDayMaxRate;
+      //return nums * 100;
+
       return Number(item.currentDayMaxRate) * 100;
     });
     time = data.map((item) => dayjs(item.time).format('MM.DD'));

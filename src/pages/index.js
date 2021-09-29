@@ -103,18 +103,19 @@ const HomePage = ({ location }) => {
   const [setFids, setSetFids] = useState('');
   const [clickData, setClickData] = useState({
     show: false,
+    errorCode: '',
     data: { type: 'text' },
   });
   const CardNoRef = useRef(null);
   const fetchTimer = useRef(null);
-  const showMode = useRef('real');
+  const showMode = useRef('book');
   const clickMapNode = useRef(null);
   const creentFloor = useRef(18);
   const floorObject = useRef(null);
   const DeskfloorObject = useRef(null);
   const [focusFloor, setFocusFloor] = useState(18);
   const [cardValue, setCardValue] = useState('');
-  const [acriveTab, setAcriveTab] = useState('real');
+  const [acriveTab, setAcriveTab] = useState('book');
   const formatTextMsg = useIntl().messages;
 
   const _onMapLoaded = (e, map) => {
@@ -575,17 +576,20 @@ const HomePage = ({ location }) => {
       if (errorCode === 200 || code === 200) {
         setClickData((prev) => ({
           show: true,
+          errorCode,
           data: { ...prev.data, type: 'success' },
         }));
         intervalMapData();
       } else if (errorCode === 400 || code === 400) {
         setClickData((prev) => ({
           show: true,
+          errorCode,
           data: { ...prev.data, type: 'book' },
         }));
       } else {
         setClickData((prev) => ({
           show: true,
+          errorCode,
           data: { ...prev.data, type: 'faile' },
         }));
       }
@@ -654,6 +658,7 @@ const HomePage = ({ location }) => {
         onClosed={handleBookModalClosed}
         bindSuccess={handleBindSuccess}
         inputDom={CardNoRef.current}
+        code={clickData.errorCode}
       />
       <input
         type="text"

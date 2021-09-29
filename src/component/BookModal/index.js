@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Input, message } from 'antd';
 import styles from './style.less';
+import { useIntl } from 'umi';
 import { bindCardByEmail } from '../../config/api';
 import dayjs from 'dayjs';
 import formatText from '../../helpers/format';
@@ -12,16 +13,21 @@ const comEmu = {
   book: Book,
 };
 function BookModal(props) {
-  const { show, deskData = {}, onClosed, id, bindSuccess } = props;
+  const { show, deskData = {}, onClosed, id, bindSuccess, code } = props;
   const { status, data, type = 'text' } = deskData;
   const [isShow, setIsShow] = useState(false);
   const [comType, setType] = useState('text');
+  const [errText, setErrText] = useState('');
   const timer = useRef(null);
+  const formatTextMsg = useIntl().messages;
   useEffect(() => {
     if (show) {
       setIsShow(true);
       startTimer();
       setType(type);
+      if (Number(code) === 207) {
+        setErrText(formatTextMsg['NOT_EXITS']);
+      }
       //document.body.addEventListener('click', lisinerFun, true);
     } else {
       setIsShow(false);
@@ -36,10 +42,9 @@ function BookModal(props) {
         clearTimeout(timer.current);
       }
     };
-  }, [show, type]);
+  }, [show, type, code]);
 
   const hideModal = () => {
-    //setIsShow(false);
     onClosed && onClosed();
     if (timer.current) {
       clearTimeout(timer.current);
@@ -57,11 +62,12 @@ function BookModal(props) {
   }, [data]);
 
   const handleBindSuccess = () => {
-    //setType('success');
     bindSuccess();
   };
-  const handleBindFaile = (msg) => {
+  const handleBindFaile = () => {
     setType('faile');
+    const abc = formatTextMsg['BIND_ERR'];
+    setErrText(abc);
   };
 
   const startTimer = () => {
@@ -103,7 +109,7 @@ function BookModal(props) {
         />
         {comType === 'text' && <Tips data={data} />}
         {comType === 'success' && <Success />}
-        {comType === 'faile' && <Faile />}
+        {comType === 'faile' && <Faile text={errText} />}
         {comType === 'book' && (
           <Book
             id={id}
@@ -141,11 +147,11 @@ function Success(params) {
     </div>
   );
 }
-function Faile(params) {
+function Faile({ text = formatText('FAILE') }) {
   return (
     <div className={styles.resultContainer}>
       <i className={styles.error} />
-      <p>{formatText('FAILE')}</p>
+      <p>{text}</p>
     </div>
   );
 }
@@ -185,7 +191,7 @@ function Book({ id, clearTimer, onSuccess, onFaile }) {
           onSuccess && onSuccess();
         } else {
           //message.error(bindRes.message);
-          onFaile && onFaile(bindRes.message);
+          onFaile && onFaile(bindRes.errorCode);
         }
       } catch (error) {
         console.error('bindCardByEmail error', error);
