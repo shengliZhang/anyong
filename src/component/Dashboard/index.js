@@ -2,18 +2,21 @@ import React from 'react';
 import { Progress } from 'antd';
 import formatText from '../../helpers/format';
 import styles from './style.less';
+import { MAX_TVOC_VALUE } from '../../config'
 
+const MAX_VAL = parseInt(MAX_TVOC_VALUE) || 1000
 function Dashboard({ data }) {
   if (!data) return null;
+  const tvocVal = Number(data?.tvoc) > MAX_VAL ? MAX_VAL - 1 : Number(data?.tvoc)
   return (
     <div className={styles.containers}>
       <Item
         max={1}
-        color={TVOCword(Number(data?.tvoc)).color} //"#59DEAB"
+        color={TVOCword(tvocVal).color} //"#59DEAB"
         text="TVOC"
-        tag={TVOCword(Number(data?.tvoc)).text} //"合格"
+        tag={TVOCword(tvocVal).text} //"合格"
         per="" //"mg/m³"
-        num={Number(data?.tvoc) / 1000}
+        num={tvocVal / 1000}
       />
       <Item
         max={250}

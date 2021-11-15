@@ -31,6 +31,8 @@ export const mapId = '1424550523468173313';
 export const themeId = '1424550523468173313'; //'1432959141842407426';
 export const appName = '招商银行_SaaS平台';
 
+export const MAX_TVOC_VALUE = isProduction ? 'MAX_TVOC_PLACEHOLDER__' : ''
+
 export const mapServerURL = !isProduction
   ? `https://maps.data.dfocus.tech/fengmaps`
   : `MAP_SERVER_URL_PLACEHOLDER__`;
