@@ -5,7 +5,7 @@ export default {
   FLOOR_WETING: '等待中',
   FLOOR_USEING: '使用中',
   FLOOR_OCP: '占用中',
-  STUF_SEARCH: '人员搜索',
+  STUF_SEARCH: '搜索',
   HE_GE: '优',
   YI_BAN: '良',
   BU_HE_GE: '轻度污染',

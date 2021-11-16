@@ -18,7 +18,6 @@ function SwitchTabs({ onChange, active }) {
   //  setAvtive(acriveTab);
   //}, [acriveTab]);
 
-  console.log('SwitchTabs is', active, '--acriveTab--');
   return (
     <div className={styles.container}>
       <div

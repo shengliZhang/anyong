@@ -1,33 +1,28 @@
 .container {
   position: absolute;
-  top: 110px;
-  left: 90px;
-  width: 192px;
-  height: 90px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: solid 2px #979797;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 10px;
+  bottom: 440px;
+  right: 50px;
+  width: 98px;
+  height: auto;
 }
 .item {
-  flex: 1;
+  //flex: 1;
   height: 90px;
   text-align: center;
   font-size: 24px;
   color: #fff;
-  box-sizing: border-box;
   padding-top: 13px;
-  border-radius: 10px;
+  border: 2px solid #78c7e6;
   &.activeleft {
-    margin-left: -2px;
+    //margin-left: -2px;
     background: #179efc;
-    border: 1px solid #179efc;
+    
   }
   &.activeRight {
-    margin-right: -2px;
+    //margin-right: -2px;
     background: #179efc;
-    border: 1px solid #179efc;
+  }
+  &:first-child {
+    margin-bottom: 30px;
   }
 }

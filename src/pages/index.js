@@ -456,19 +456,19 @@ const HomePage = ({ location }) => {
   };
 
   useEffect(() => {
-    language.current = getLocale() === 'en-US' ? 'en' : 'zh';
-    fetchBuidingId();
-    fetchFloorId().then(() => {
-      getMeetingUseData();
-    });
+    //language.current = getLocale() === 'en-US' ? 'en' : 'zh';
+    //fetchBuidingId();
+    //fetchFloorId().then(() => {
+    //  getMeetingUseData();
+    //});
 
-    if (weatherTimer.current) {
-      clearInterval(weatherTimer.current);
-    }
-    weatherTimer.current = setInterval(() => {
-      init(language.current);
-    }, 1000 * 60 * 60);
-    init(language.current);
+    //if (weatherTimer.current) {
+    //  clearInterval(weatherTimer.current);
+    //}
+    //weatherTimer.current = setInterval(() => {
+    //  init(language.current);
+    //}, 1000 * 60 * 60);
+    //init(language.current);
 
     return () => {
       if (mapTimer.current) {
@@ -625,15 +625,14 @@ const HomePage = ({ location }) => {
               })}
             </div>
           </div>
-
           <SwitchTabs onChange={handleTabChange} active={acriveTab} />
 
           <div className={styles.mapCenter}>
             <Map
               _onMapLoaded={_onMapLoaded}
-              mapWidth={2057}
-              mapHeight={1530}
-              defaultMapScale={148}
+              mapWidth={2120}
+              mapHeight={1750}
+              defaultMapScale={125}
               handleMapClickNode={handleMapClickNode}
               handleFloorChange={handleFloorChange}
               query={query}

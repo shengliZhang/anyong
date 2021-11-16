@@ -160,7 +160,11 @@ function Map(props) {
             <p
               className={`${styles.itm} ${focus == k ? styles.active : ''}`}
               key={k}
-              onClick={() => handleToChangeFlor(k)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleToChangeFlor(k);
+              }}
             >
               {k}F
             </p>
@@ -348,7 +352,7 @@ function Map(props) {
             init2D: true,
             viewModeButtonNeeded: true,
             groupsButtonNeeded: false,
-            offset: { x: 150, y: 10 },
+            offset: { x: 208, y: -60 },
           }}
         />
       </FengmapBase>

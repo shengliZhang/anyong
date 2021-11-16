@@ -4,10 +4,13 @@ import formatText from '../../helpers/format';
 import styles from './style.less';
 import { MAX_TVOC_VALUE } from '../../config'
 
-const MAX_VAL = parseInt(MAX_TVOC_VALUE) || 1000
+const MAX_VAL = MAX_TVOC_VALUE ? parseInt(MAX_TVOC_VALUE) : null
 function Dashboard({ data }) {
   if (!data) return null;
-  const tvocVal = Number(data?.tvoc) > MAX_VAL ? MAX_VAL - 1 : Number(data?.tvoc)
+  let tvocVal = Number(data?.tvoc)
+  if (MAX_VAL) {
+    tvocVal = tvocVal >= MAX_VAL ? MAX_VAL - 1 : tvocVal
+  }
   return (
     <div className={styles.containers}>
       <Item

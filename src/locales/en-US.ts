@@ -5,7 +5,7 @@ export default {
   FLOOR_USEING: 'Using',
   FLOOR_WETING: 'Waiting',
   FLOOR_OCP: 'Occupied',
-  STUF_SEARCH: 'Person search',
+  STUF_SEARCH: 'Search',
   HE_GE: 'Good',
   YI_BAN: 'Moderate',
   BU_HE_GE: 'Poor',
