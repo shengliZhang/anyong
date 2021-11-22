@@ -97,7 +97,7 @@ function Map(props) {
       options: {
         ...startObj[groupID],
         groupID,
-        size: 64,
+        size: 60,
         url: startPointUrl,
       },
     };

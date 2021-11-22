@@ -8,7 +8,7 @@ import formatText from '../../helpers/format';
 function Weather({ weatherData }) {
   return (
     <>
-      <TitleWithIcon name={formatText('WEATHER')} />
+      <TitleWithIcon name={formatText('WEATHER')} location="上海" />
       <OuterDoor data={weatherData?.outWeather} />
       <TitleWithIcon name={formatText('OUT_DOOR')} />
       <Indoor data={weatherData?.innerAir} type={weatherData.floor} />

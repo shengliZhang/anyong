@@ -456,19 +456,19 @@ const HomePage = ({ location }) => {
   };
 
   useEffect(() => {
-    //language.current = getLocale() === 'en-US' ? 'en' : 'zh';
-    //fetchBuidingId();
-    //fetchFloorId().then(() => {
-    //  getMeetingUseData();
-    //});
+    language.current = getLocale() === 'en-US' ? 'en' : 'zh';
+    fetchBuidingId();
+    fetchFloorId().then(() => {
+      getMeetingUseData();
+    });
 
-    //if (weatherTimer.current) {
-    //  clearInterval(weatherTimer.current);
-    //}
-    //weatherTimer.current = setInterval(() => {
-    //  init(language.current);
-    //}, 1000 * 60 * 60);
-    //init(language.current);
+    if (weatherTimer.current) {
+      clearInterval(weatherTimer.current);
+    }
+    weatherTimer.current = setInterval(() => {
+      init(language.current);
+    }, 1000 * 60 * 60);
+    init(language.current);
 
     return () => {
       if (mapTimer.current) {
