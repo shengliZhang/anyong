@@ -10,7 +10,7 @@ function Title(props) {
         <span>{name}</span>
       </div>
       <div>
-        <span className={styles.city}>{location}</span>
+        {/*<span className={styles.city}>{location}</span>*/}
       </div>
     </div>
   );
